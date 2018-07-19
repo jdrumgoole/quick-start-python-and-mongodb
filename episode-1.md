@@ -1,16 +1,17 @@
-Setting Up MongoDB
+#Setting Up Your PyMongo Environment
 
 Welcome to PyMongo Monday. This is the first in a series of weekly blog posts that will introduce developers to programming MongoDB using the Python programming language. It’s called PyMongo Monday because PyMongo is the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact with the MongoDB Server. Monday because we aim to release a new episode each week on Monday.
 
-To get started we need to install the standard MongoDB toolchain that a typical MongoDB developer would expect to use. We start with a tool called **m **that allows a developer to manage multiple concurrent installations of MongoDB. 
+To get started we need to install the standard MongoDB toolchain that a typical MongoDB developer would expect to use.
 
 ## Installing **m**
 
-First up is **m**. Hard to find online unless your search for "MongoDB m", **m** is an invaluable tool if you want to try out the latest and greatest (did we mentioned that multi-document transactions are coming) but still continue mainline development on out current stable release.
+First up is [m](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is an invaluable tool if you want to try out the latest and greatest (did we mentioned that multi-document transactions are coming) but still continue mainline development on out current stable release.
 
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager (which it turns out is not just for Node.js). 
 
-Joes-MacBook-Air:~ jdrumgoole$ sudo **npm install -g m**
+<pre>
+$ **sudo npm install -g m**
 
 Password:
 
@@ -20,13 +21,15 @@ Password:
 
 added 1 package in 0.8s
 
-Joes-MacBook-Air:~ jdrumgoole$
+$
+<pre>
 
-If you can’t or don’t want to use npm you can download and install directly from the github [repo](https://github.com/aheckmann/m). See the readme there for details.
+If you can’t or don’t want to use npm you can download and install directly from the github [repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) there for details.
 
-For today we use want to install the current stable production version so we will run the **stable** command which installs the latest supported version of MongoDB ([3.6.5](https://docs.mongodb.com/manual/release-notes/3.6/) at the time of writing).
+For today we will use **m** to install the current stable production version (4.0.0 at the time of writing)  so we will run the **stable** command which installs the latest supported version of MongoDB ([4.0](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).
 
-Joes-MacBook-Air:~ jdrumgoole$ **sudo**** m stable**
+<pre>
+Joes-MacBook-Air:~ jdrumgoole$ **sudo m stable**
 
 MongoDB version 3.6.5 is not installed.
 
@@ -42,19 +45,23 @@ Installation may take a while. Would you like to proceed? [y/n] **y**
 
 ... installation complete
 
-Joes-MacBook-Air:~ jdrumgoole$
+$
+</pre>
 
 If you need to use the path directly in another program you can get that with **m bin.**
 
-Joes-MacBook-Air:m jdrumgoole$ **m bin 3.6.5**
+<pre>
+Joes-MacBook-Air:m jdrumgoole$ **m bin 4.0**
 
 /usr/local/m/versions/3.6.5/bin
 
 Joes-MacBook-Air:m jdrumgoole$
+</pre>
 
 To run the corresponding binary do** m use.**
 
-Joes-MacBook-Air:m jdrumgoole$ **sudo m use 3.6.5 --port 8000**
+<pre>
+$ **sudo m use 3.6.5 --port 8000**
 
 2018-06-13T15:52:42.626+0100 I CONTROL  [initandlisten] MongoDB starting : pid=78058 port=8000 dbpath=/data/db 64-bit host=Joes-MacBook-Air.local
 
@@ -69,9 +76,11 @@ Joes-MacBook-Air:m jdrumgoole$ **sudo m use 3.6.5 --port 8000**
 *...*
 
 2018-06-13T15:52:43.648+0100 I NETWORK  [initandlisten] waiting for connections on port 8000
+</pre>
 
 Now that we have a server running we can confirm that it works by connecting via the mongo shell.
 
+<pre>
 Joes-MacBook-Air:~ jdrumgoole$** mongo --port 8000**
 
 MongoDB shell version v3.6.5
@@ -107,6 +116,7 @@ Server has startup warnings:
 2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten]
 
 >
+</pre>
 
 These warnings are standard. They flag that this database has no access controls setup by default and that it is only listening to connections coming from the machine it is running on. We will learn how to setup access control and listen on a broader range of ports in later episodes.
 
@@ -118,7 +128,8 @@ So how would we connect to the database with Python?
 
 We need to install the [MongoDB driver](https://docs.mongodb.com/ecosystem/drivers/) for Python. In MongoDB parlance a driver is a language specific client library used to allow developers to interact with the server in the idioms of their own programming language. So the Python is installed by pip.
 
-(pymongo_monday) Joes-MacBook-Air:~ jdrumgoole$ **pip3 install pymongo**
+<pre>
+(pymongo_monday)$ **pip3 install pymongo**
 
 Collecting pymongo
 
@@ -134,6 +145,7 @@ The more sharp eyed amongst you will realise I am using a [virtual environment](
 
 Now we can connect to the database:
 
+<pre>
 pymongo_monday) Joes-MacBook-Air:~ jdrumgoole$ **python**
 
 Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 03:03:55)
@@ -173,6 +185,7 @@ Type "help", "copyright", "credits" or "license" for more information.
  'readOnly': False}
 
 >>>
+</pre>
 
 First we import the PyMongo library (1). The we create a local **client** object (2) that hold the connection pool and other status for this server. We don’t want more than one MongoClient object per program as it provides its own connection pool. 
 
