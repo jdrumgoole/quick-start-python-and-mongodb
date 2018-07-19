@@ -4,121 +4,100 @@ Welcome to PyMongo Monday. This is the first in a series of weekly blog posts th
 
 To get started we need to install the standard MongoDB toolchain that a typical MongoDB developer would expect to use.
 
-## Installing **m**
+## Installing m
 
-First up is [m](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is an invaluable tool if you want to try out the latest and greatest (did we mentioned that multi-document transactions are coming) but still continue mainline development on out current stable release.
+First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is an invaluable tool if you want to try out the latest and greatest (did we mentioned that multi-document transactions are coming) but still continue mainline development on out current stable release.
 
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager (which it turns out is not just for Node.js). 
 
 <pre>
-$ **sudo npm install -g m**
 
-Password:
-
+$ <b>sudo npm install -g m</b>
+Password:******
 /usr/local/bin/m -> /usr/local/lib/node_modules/m/bin/m
-
-+ m@1.3.3
-
-added 1 package in 0.8s
-
++ m@1.4.1
+updated 1 package in 2.361s
 $
-<pre>
+</pre>
 
 If you can’t or don’t want to use npm you can download and install directly from the github [repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) there for details.
 
 For today we will use **m** to install the current stable production version (4.0.0 at the time of writing)  so we will run the **stable** command which installs the latest supported version of MongoDB ([4.0](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).
 
 <pre>
-Joes-MacBook-Air:~ jdrumgoole$ **sudo m stable**
-
-MongoDB version 3.6.5 is not installed.
-
+$ <b>sudo m stable</b>
+MongoDB version 4.0.0 is not installed.
 Installation may take a while. Would you like to proceed? [y/n] **y**
-
 ... installing binary
 
 ######################################################################## 100.0%
-
 /Users/jdrumgoole
-
 ... removing source
-
 ... installation complete
-
 $
 </pre>
 
 If you need to use the path directly in another program you can get that with **m bin.**
 
 <pre>
-Joes-MacBook-Air:m jdrumgoole$ **m bin 4.0**
-
+$ **m bin 4.0.0**
 /usr/local/m/versions/3.6.5/bin
-
-Joes-MacBook-Air:m jdrumgoole$
+$
 </pre>
 
-To run the corresponding binary do** m use.**
+To run the corresponding binary do **m use stable**
 
 <pre>
-$ **sudo m use 3.6.5 --port 8000**
-
+$ <b>sudo m use stable --port 8000</b>
 2018-06-13T15:52:42.626+0100 I CONTROL  [initandlisten] MongoDB starting : pid=78058 port=8000 dbpath=/data/db 64-bit host=Joes-MacBook-Air.local
-
 2018-06-13T15:52:42.627+0100 I CONTROL  [initandlisten] db version v3.6.5
-
 2018-06-13T15:52:42.627+0100 I CONTROL  [initandlisten] git version: a20ecd3e3a174162052ff99913bc2ca9a839d618
-
-**…**
-
-*(lots of server noise…)*
-
-*...*
-
+<b>&lt other server output &gt </b>
+<b>...</b>
 2018-06-13T15:52:43.648+0100 I NETWORK  [initandlisten] waiting for connections on port 8000
 </pre>
 
 Now that we have a server running we can confirm that it works by connecting via the mongo shell.
 
 <pre>
-Joes-MacBook-Air:~ jdrumgoole$** mongo --port 8000**
-
-MongoDB shell version v3.6.5
-
-connecting to: mongodb://127.0.0.1:8000/
-
-MongoDB server version: 3.6.5
-
+(py3env) Joes-MacBook-Air:pymongo-transactions jdrumgoole$ mongo
+MongoDB shell version v4.0.0
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 4.0.0
 Server has startup warnings:
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten]
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten]
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] ** WARNING: This server is bound to localhost.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          Remote systems will be unable to connect to this server.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          Start the server with --bind_ip &lt address&gt to specify which IP
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          addresses it should serve responses from, or with --bind_ip_all to
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          bind to all interfaces. If this behavior is desired, start the
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
+2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten]
 
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten]
+&mdash&mdash&mdash
+Enable MongoDB's free cloud-based monitoring service to collect and display
+metrics about your deployment (disk utilization, CPU, operation statistics,
+etc).
 
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+The monitoring data will be available on a MongoDB website with a unique
+URL created for you. Anyone you share the URL with will also be able to
+view this page. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
 
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten]
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] ** WARNING: This server is bound to localhost.
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          Remote systems will be unable to connect to this server.
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          Start the server with --bind_ip <address> to specify which IP
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          addresses it should serve responses from, or with --bind_ip_all to
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          bind to all interfaces. If this behavior is desired, start the
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
-
-2018-06-13T22:31:50.176+0100 I CONTROL  [initandlisten]
+To enable free monitoring, run the following command:
+db.enableFreeMonitoring()
+---
 
 >
 </pre>
 
-These warnings are standard. They flag that this database has no access controls setup by default and that it is only listening to connections coming from the machine it is running on. We will learn how to setup access control and listen on a broader range of ports in later episodes.
+These warnings are standard. They flag that this database has no access controls setup by default and 
+that it is only listening to connections coming from the machine it is running on (*localhost*). 
+We will learn how to setup access control and listen on a broader range of ports in later episodes.
 
 ## Installing the PyMongo Driver
 
@@ -126,72 +105,63 @@ But this series is not about the MongoDB Shell, which uses Javascript as its coi
 
 So how would we connect to the database with Python?
 
-We need to install the [MongoDB driver](https://docs.mongodb.com/ecosystem/drivers/) for Python. In MongoDB parlance a driver is a language specific client library used to allow developers to interact with the server in the idioms of their own programming language. So the Python is installed by pip.
+We need to install the MongoDB Python Driver, [PyMongo](https://docs.mongodb.com/ecosystem/drivers/). 
+In MongoDB parlance a driver is a language specific client library used to allow developers to interact with the server in the idioms of their own programming language.
+For Python that means the driver is installed using ```pip```. In node.js the driver is 
+installed using ```npm``` and in Java you can use ```maven```.
 
 <pre>
-(pymongo_monday)$ **pip3 install pymongo**
-
+$ <b>pip3 install pymongo</b>
 Collecting pymongo
-
-  Using cached https://files.pythonhosted.org/packages/5c/7f/1f7240883ec3fa768d7e066c9cbd42ceb42d699ba1a0fb9d231c098a542d/pymongo-3.6.1-cp36-cp36m-macosx_10_6_intel.whl
-
+  Downloading https://files.pythonhosted.org/packages/a1/e0/51df08036e04c1ddc985a2dceb008f2f21fc1d6de711bb6cee85785c1d78/pymongo-3.7.1-cp27-cp27m-macosx_10_13_intel.whl (333kB)
+    100% |████████████████████████████████| 337kB 4.1MB/s
 Installing collected packages: pymongo
+Successfully installed pymongo-3.7.1
+$
+</pre>
 
-Successfully installed pymongo-3.6.1
-
-(pymongo_monday) Joes-MacBook-Air:~ jdrumgoole$
-
-The more sharp eyed amongst you will realise I am using a [virtual environment](https://docs.python.org/3/library/venv.html) to isolate my PyMongo Monday code. This is not required but is very convenient for isolating different development streams.
+We recommend you use a [virtual environment](https://docs.python.org/3/library/venv.html) to isolate your PyMongo Monday code. 
+This is not required but is very convenient for isolating different development streams.
 
 Now we can connect to the database:
 
 <pre>
 pymongo_monday) Joes-MacBook-Air:~ jdrumgoole$ **python**
-
 Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 03:03:55)
-
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
-
 Type "help", "copyright", "credits" or "license" for more information.
-
->>> **import pymongo ****(1)**
-
->>> **client = pymongo.MongoClient(host="mongodb://localhost:8000")****(2)**
-
->>> **result = client.admin.command("isMaster") ****(3)**
-
->>> **import pprint**
-
->>> **pprint.pprint(result)**
-
+>>> <b>import pymongo</b> <i>(1)</i>
+>>> <b>client = pymongo.MongoClient(host="mongodb://localhost:8000")</b> <i>(2)</i>
+>>> <b>result = client.admin.command("isMaster")</b> <i>(3)</i>
+>>> <b>import pprint</b>
+>>> <b>pprint.pprint(result)</b>
 {'ismaster': True,
-
  'localTime': datetime.datetime(2018, 6, 13, 21, 55, 2, 272000),
-
  'logicalSessionTimeoutMinutes': 30,
-
  'maxBsonObjectSize': 16777216,
-
  'maxMessageSizeBytes': 48000000,
-
  'maxWireVersion': 6,
-
  'maxWriteBatchSize': 100000,
-
  'minWireVersion': 0,
-
  'ok': 1.0,
-
  'readOnly': False}
-
 >>>
 </pre>
 
-First we import the PyMongo library (1). The we create a local **client** object (2) that hold the connection pool and other status for this server. We don’t want more than one MongoClient object per program as it provides its own connection pool. 
+First we import the PyMongo library *(1)*. The we create a local **client** object *(2)* that holds the connection pool and other status for this server. 
+We generally don’t want more than one ```MongoClient``` object per program as it provides its own 
+connection pool. 
 
-No we are ready to issue a command to the server. In this case its the standard MongoDB server information command which is called rather anachronistically **isMaster ****(3)****. **This is a hangover from the very early versions of MongoDB. It appears in very earliest pre 1.0 versions of MongoDB  which is over ten years old. The isMaster command returns a dict which details a bunch of server information. In order to format this in a more readable  way import the **pprint** library.
+Now we are ready to issue a command to the server. 
+In this case its the standard MongoDB server information command which is called rather 
+anachronistically **isMaster *(3)*. **This is a hangover from the very early versions of MongoDB. 
+It appears in very earliest pre 1.0 versions of MongoDB  which is over ten years old at this stage. 
+The isMaster command returns a dict which details a bunch of server information. In order to format this in a more readable  way import the **pprint** library.
 
-That’s the end of episode one. Next week we will talk about doing CRUD operations on MongoDB. We will also install [Compass](https://www.mongodb.com/products/compass) the best way to interact with MongoDB and show you how to connect to MongoDB Atlas our Database as a Service. 
+That’s the end of episode one. Next week we will introduce CRUD operations on MongoDB. 
 
 For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole) that way everyone can see the answers. 
 
+The best way to try out MongoDB is via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+ our Database as a Service. 
+ 
