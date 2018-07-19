@@ -1,4 +1,4 @@
-#Setting Up Your PyMongo Environment
+# Setting Up Your PyMongo Environment
 
 Welcome to PyMongo Monday. This is the first in a series of weekly blog posts that will introduce developers to programming MongoDB using the Python programming language. It’s called PyMongo Monday because PyMongo is the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact with the MongoDB Server. Monday because we aim to release a new episode each week on Monday.
 
