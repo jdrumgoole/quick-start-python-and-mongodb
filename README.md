@@ -1,7 +1,7 @@
 # PyMongo Monday
 A companion repo to the PyMongo Monday blog series on http://mongodb.com/blog
 
-* Episode 1 : Setting up your PyMongo Environment
+* Episode 1 : [Setting up your PyMongo Environment](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md)
 * Episode 2 : Basic CRUD - PyMongo Create
 * Episode 3 : Basic CRUD - PyMongo Read
 * Episode 4 : Basic CRUD - PyMongo Update
