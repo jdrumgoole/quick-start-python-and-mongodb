@@ -53,7 +53,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> <b>database.people_collection.find_one()</b>
 {'_id': ObjectId('5b62e6f8c3b498fbfdc1c20c'), 'name': 'Joe Drumgoole'}
 >>> <b>result.inserted_id</b>
-ObjectId('5b62e6f8c3b498fbfdc1c20c')
+ObjectId('5b7d297cc718bc133212aa94')
 >>>
 </pre>
 
@@ -70,14 +70,30 @@ they are referred to:
 >>> <b>people_collection = database[ "people_collection" ]</b>
 </pre>
 
-A database is effectively a container for collections. A collection provides a container for documents
- 
+A database is effectively a container for collections. A collection provides a container for documents.
+Neither the database nor the collection will be created on the server until you actually
+insert a document. If you check the server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
+you will see that their are no databases or collection on this cluster. 
 
-ObjectId('5b60558293d635192ad586e0')
 
-<pre>ObjectId( <font color="red">5b605582</font> 93d635**192a**d586e0')</pre>
+[screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
 
-| Timestamp   | Machine Identifier        | Process ID | Counter |
-|-------------|---------------------------|------------|---------|
-| 4 Bytes     | 3 Bytes                   | 2 Bytes    | 3 Bytes |
-| 5b605582    | 93d635                    | 192a       | d586e0  |
+
+These commmands are lazily evaluated until we actually insert a document into the collection.
+Once we insert a document:
+
+<pre>
+>>> <b>result=database.people_collection.insert_one({"name" : "Joe Drumgoole"})</b>
+</pre>
+
+We will see that the database, the collection and the document spring to life.
+
+[screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
+
+And we can see the document in the database.
+
+[screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
+
+[ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
+
+

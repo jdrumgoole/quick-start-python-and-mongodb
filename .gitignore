@@ -108,3 +108,6 @@ venv.bak/
 
 #transient
 data/
+
+mongod.pid
+
