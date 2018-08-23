@@ -11,13 +11,13 @@ MongoDB has exact analogies to most of the concepts we know from SQL land.
 | Join           | [$lookup](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)|
 | ACID Transactions | [ACID Transactions](https://docs.mongodb.com/manual/core/write-operations-atomicity/#multi-document-transactions)|
 
-In MongoDB collections represent a collection of JSON documents. There are no constraints on 
+The main difference is that in MongoDB collections represent a collection of [JSON](https://www.json.org/) documents. There are no constraints on 
 the structure of the JSON inserted and each document inserted can vary in the number of fields
 and their sub-structure. 
 
 Lets look at how we insert JSON documents into MongoDB. 
 
-First lets start a local single instance of`mongod`
+First lets start a local single instance of `mongod`
 <pre>
 $ <b>mkdir data</b>
 $ <b>mongod --dbpath data</b>
@@ -29,14 +29,14 @@ $ <b>mongod --dbpath data</b>
 <b>etc ...</b>
 </pre>
 
-the `mongod` starts listen on port `27017` by default and as every MongoDB driver
+the `mongod` starts listening on port `27017` by default. As every MongoDB driver
 defaults to connecting on `localhost:27017` we won't need to specify a [connection string](https://docs.mongodb.com/manual/reference/connection-string/)
 explicitly in these early examples. 
 
 Now we want to work with the Python driver. These examples are using Python 3.6.5 but everything
 should work with versions as old as 2.7 without problems. 
 
-Unlike SQL databases and collections in MongoDB spring to life automatically as we name then so lets
+Unlike SQL databases, collections in MongoDB spring to life automatically as we name them. Let's
 look at how create create a client proxy, a database and a collection.
 
 <pre>
@@ -49,11 +49,14 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> <b>client = pymongo.MongoClient()</b>                                         
 >>> <b>database = client[ "ep002" ]</b>
 >>> <b>people_collection = database[ "people_collection" ]</b>
->>> <b>result=database.people_collection.insert_one({"name" : "Joe Drumgoole"})</b>
->>> <b>database.people_collection.find_one()</b>
-{'_id': ObjectId('5b62e6f8c3b498fbfdc1c20c'), 'name': 'Joe Drumgoole'}
+>>> <b>result=people_collection.insert_one({"name" : "Joe Drumgoole"})</b>
 >>> <b>result.inserted_id</b>
 ObjectId('5b7d297cc718bc133212aa94')
+>>> <b>result.acknowledged</b>
+True
+>>> <b>people_collection.find_one()</b>
+{'_id': ObjectId('5b62e6f8c3b498fbfdc1c20c'), 'name': 'Joe Drumgoole'}
+True
 >>>
 </pre>
 
@@ -66,8 +69,8 @@ client by default attempts to connect to `localhost:27017`.
 Once we have a `client` object we can now create a database and a collection. These spring to life automatically when
 they are referred to:
 <pre>
->>> <b>database = client[ "ep002" ]</b>
->>> <b>people_collection = database[ "people_collection" ]</b>
+>>> <b>database = client["ep002"]</b>
+>>> <b>people_collection = database["people_collection"]</b>
 </pre>
 
 A database is effectively a container for collections. A collection provides a container for documents.
@@ -76,24 +79,61 @@ insert a document. If you check the server by connecting [MongoDB Compass](https
 you will see that their are no databases or collection on this cluster. 
 
 
-[screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
+![screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
 
 
-These commmands are lazily evaluated until we actually insert a document into the collection.
+These commmands are lazily evaluated so until we actually insert a document into the collection nothing is
+happening on the server.
+
 Once we insert a document:
 
 <pre>
 >>> <b>result=database.people_collection.insert_one({"name" : "Joe Drumgoole"})</b>
+>>> <b>result.inserted_id</b>
+ObjectId('5b7d297cc718bc133212aa94')
+>>> <b>result.acknowledged</b>
+True
+>>> <b>people_collection.find_one()</b>
+{'_id': ObjectId('5b62e6f8c3b498fbfdc1c20c'), 'name': 'Joe Drumgoole'}
+True
+>>>
 </pre>
 
-We will see that the database, the collection and the document spring to life.
+Every object that is inserted into a MongoDB database gets and automatically generated `_id` field. This field
+is guaranteed to be unique for every document inserted into the collection and this unique property is enforced
+as the `_id` field is an [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
+and the index is unique. The value of the `_id` field is defined as follows:
+
+![ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
+
+The `_id` field is generated on the client and for PyMongo you can see the generation code in the 
+[objectid.py](https://github.com/mongodb/mongo-python-driver/blob/master/bson/objectid.py) file. Just search
+for the ` def _generate`. All MongoDB drivers generate `_id` fields on the client side. the `_id` field
+allows us to insert the same JSON object many times and allow each one to be uniquely identified. The `_id` 
+field even gives a temporal ordering and you get obtain this from an ObjectID via the 
+[generation_time](https://api.mongodb.com/python/2.7.1/api/bson/objectid.html) method.
+<pre>
+>>> <b>from bson import ObjectId</b>
+>>> x=ObjectId('5b7d297cc718bc133212aa94')
+>>> <b>x.generation_time</b>
+datetime.datetime(2018, 8, 22, 9, 14, 36, tzinfo=<bson.tz_util.FixedOffset object at 0x1049efa20>)
+>>> <b>print(x.generation_time)</b>
+2018-08-22 09:14:36+00:00
+>>>
+>>>
+</pre>
+
+We will see that the database, the collection and the document spring to life once the document 
+is inserted.
 
 [screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
 
 And we can see the document in the database.
 
-[screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
+![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
 
-[ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
+That is *create* in MongoDB. We started a `mongod` instance, created a `MongoClient` proxy, instantiated
+a database and a collection and finally make then spring to life by inserting a document. 
 
+Next up we will talk more abou *read* or the `find` query which we saw a little bit off in this episode.
 
