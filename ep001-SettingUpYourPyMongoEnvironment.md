@@ -1,17 +1,22 @@
 # Setting Up Your PyMongo Environment
 
-Welcome to PyMongo Monday. This is the first in a series of weekly blog posts that will introduce developers to programming MongoDB using the Python programming language. It’s called PyMongo Monday because PyMongo is the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact with the MongoDB Server. Monday because we aim to release a new episode each week on Monday.
+Welcome to PyMongo Monday. This is the first in a series of regular blog posts that will introduce developers to 
+programming MongoDB using the Python programming language. It’s called PyMongo Monday because PyMongo is 
+the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact 
+with the MongoDB Server. Monday because we aim to release each new episode on Monday.
 
-To get started we need to install the standard MongoDB toolchain that a typical MongoDB developer would expect to use.
+To get started we need to install the toolchain that a typical MongoDB Python developer would expect to use.
 
 ## Installing m
 
-First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is an invaluable tool if you want to try out the latest and greatest (did we mentioned that multi-document transactions are coming) but still continue mainline development on out current stable release.
+First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is 
+a tool to manage and use multiple installations of the MongoDB Server in parallel. It is an invaluable tool 
+if you want to try out the latest and greatest beta version but still continue mainline development 
+on out current stable release.
 
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager (which it turns out is not just for Node.js). 
 
 <pre>
-
 $ <b>sudo npm install -g m</b>
 Password:******
 /usr/local/bin/m -> /usr/local/lib/node_modules/m/bin/m
@@ -20,13 +25,16 @@ updated 1 package in 2.361s
 $
 </pre>
 
-If you can’t or don’t want to use npm you can download and install directly from the github [repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) there for details.
+If you can’t or don’t want to use npm you can download and install directly from the github 
+[repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) 
+there for details.
 
-For today we will use **m** to install the current stable production version (4.0.0 at the time of writing)  so we will run the **stable** command which installs the latest supported version of MongoDB ([4.0](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).
+For today we will use **m** to install the current stable production version (4.0.1 at the time of writing)  
+so we will run the **stable** command which installs the latest supported version of MongoDB ([4.0](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).
 
 <pre>
-$ <b>sudo m stable</b>
-MongoDB version 4.0.0 is not installed.
+$ <b>m stable</b>
+MongoDB version 4.0.1 is not installed.
 Installation may take a while. Would you like to proceed? [y/n] **y**
 ... installing binary
 
@@ -40,8 +48,8 @@ $
 If you need to use the path directly in another program you can get that with **m bin.**
 
 <pre>
-$ **m bin 4.0.0**
-/usr/local/m/versions/3.6.5/bin
+$ <b>m bin 4.0.0</b>
+/usr/local/m/versions/4.0.1/bin
 $
 </pre>
 
@@ -60,7 +68,7 @@ $ <b>sudo m use stable --port 8000</b>
 Now that we have a server running we can confirm that it works by connecting via the mongo shell.
 
 <pre>
-(py3env) Joes-MacBook-Air:pymongo-transactions jdrumgoole$ mongo
+$ <b>mongo</b>
 MongoDB shell version v4.0.0
 connecting to: mongodb://127.0.0.1:27017
 MongoDB server version: 4.0.0
@@ -101,14 +109,16 @@ We will learn how to setup access control and listen on a broader range of ports
 
 ## Installing the PyMongo Driver
 
-But this series is not about the MongoDB Shell, which uses Javascript as its coin of the realm, it’s about Python. 
+But this series is not about the MongoDB Shell, which uses Javascript as its coin of the realm, 
+it’s about Python. 
 
 So how would we connect to the database with Python?
 
-We need to install the MongoDB Python Driver, [PyMongo](https://docs.mongodb.com/ecosystem/drivers/). 
-In MongoDB parlance a driver is a language specific client library used to allow developers to interact with the server in the idioms of their own programming language.
-For Python that means the driver is installed using ```pip```. In node.js the driver is 
-installed using ```npm``` and in Java you can use ```maven```.
+First we need to install the MongoDB Python Driver, [PyMongo](https://docs.mongodb.com/ecosystem/drivers/). 
+In MongoDB parlance a driver is a language specific client library used to allow developers to 
+interact with the server in the idioms of their own programming language.
+For Python that means the driver is installed using `pip`. In node.js the driver is 
+installed using `npm` and in Java you can use `maven`.
 
 <pre>
 $ <b>pip3 install pymongo</b>
@@ -120,19 +130,19 @@ Successfully installed pymongo-3.7.1
 $
 </pre>
 
-We recommend you use a [virtual environment](https://docs.python.org/3/library/venv.html) to isolate your PyMongo Monday code. 
-This is not required but is very convenient for isolating different development streams.
+We recommend you use a [virtual environment](https://docs.python.org/3/library/venv.html) to isolate your 
+PyMongo Monday code. This is not required but is very convenient for isolating different development streams.
 
 Now we can connect to the database:
 
 <pre>
-pymongo_monday) Joes-MacBook-Air:~ jdrumgoole$ **python**
+$ <b>python</b>
 Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 03:03:55)
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
->>> <b>import pymongo</b> <i>(1)</i>
->>> <b>client = pymongo.MongoClient(host="mongodb://localhost:8000")</b> <i>(2)</i>
->>> <b>result = client.admin.command("isMaster")</b> <i>(3)</i>
+>>> <b>import pymongo</b>                                                  <i>(1)</i>
+>>> <b>client = pymongo.MongoClient(host="mongodb://localhost:8000")</b>   <i>(2)</i>
+>>> <b>result = client.admin.command("isMaster")</b>                       <i>(3)</i>
 >>> <b>import pprint</b>
 >>> <b>pprint.pprint(result)</b>
 {'ismaster': True,
@@ -148,17 +158,21 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 </pre>
 
-First we import the PyMongo library *(1)*. The we create a local **client** object *(2)* that holds the connection pool and other status for this server. 
-We generally don’t want more than one ```MongoClient``` object per program as it provides its own 
+First we import the PyMongo library *(1)*. The we create a local `client` object *(2)* that holds the connection pool and other status for this server. 
+We generally don’t want more than one `MongoClient` object per program as it provides its own 
 connection pool. 
 
 Now we are ready to issue a command to the server. 
 In this case its the standard MongoDB server information command which is called rather 
-anachronistically **isMaster *(3)*. **This is a hangover from the very early versions of MongoDB. 
+anachronistically `isMaster` *(3)*. **This is a hangover from the very early versions of MongoDB. 
 It appears in very earliest pre 1.0 versions of MongoDB  which is over ten years old at this stage. 
-The isMaster command returns a dict which details a bunch of server information. In order to format this in a more readable  way import the **pprint** library.
+The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
+format this in a more readable  way import the `pprint` library.
 
-That’s the end of episode one. Next week we will introduce CRUD operations on MongoDB. 
+That’s the end of episode one. We have installed MonogDB, started a, the Python client library (aka driver),
+started a `mongod` server and established a connection between the client and server.
+
+Next week we will introduce CRUD operations on MongoDB starting with **Create**.
 
 For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole) that way everyone can see the answers. 
 

@@ -11,9 +11,9 @@ MongoDB has exact analogies to most of the concepts we know from SQL land.
 | Join           | [$lookup](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)|
 | ACID Transactions | [ACID Transactions](https://docs.mongodb.com/manual/core/write-operations-atomicity/#multi-document-transactions)|
 
-The main difference is that in MongoDB collections represent a collection of [JSON](https://www.json.org/) documents. There are no constraints on 
-the structure of the JSON inserted and each document inserted can vary in the number of fields
-and their sub-structure. 
+The main difference is that in MongoDB collections represent a collection of [JSON](https://www.json.org/) 
+documents. There are no constraints on the structure of the JSON inserted and each document inserted 
+can vary in the number of fields and their sub-structure. 
 
 Lets look at how we insert JSON documents into MongoDB. 
 
@@ -30,7 +30,8 @@ $ <b>mongod --dbpath data</b>
 </pre>
 
 the `mongod` starts listening on port `27017` by default. As every MongoDB driver
-defaults to connecting on `localhost:27017` we won't need to specify a [connection string](https://docs.mongodb.com/manual/reference/connection-string/)
+defaults to connecting on `localhost:27017` we won't need to specify a 
+[connection string](https://docs.mongodb.com/manual/reference/connection-string/)
 explicitly in these early examples. 
 
 Now we want to work with the Python driver. These examples are using Python 3.6.5 but everything
@@ -66,8 +67,9 @@ connection pool to the server and can be used to set a number of operational par
 We can leave the parameter list to the `MongoClient` call blank. The server by default listens on port `27017` and the
 client by default attempts to connect to `localhost:27017`. 
 
-Once we have a `client` object we can now create a database and a collection. These spring to life automatically when
-they are referred to:
+Once we have a `client` object we can now create a database and a collection. We do not need an explicit
+DDL we just name these objects and the driver and server will ensure that they spring to life when a document 
+is inserted.
 <pre>
 >>> <b>database = client["ep002"]</b>
 >>> <b>people_collection = database["people_collection"]</b>
@@ -78,9 +80,7 @@ Neither the database nor the collection will be created on the server until you 
 insert a document. If you check the server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
 you will see that their are no databases or collection on this cluster. 
 
-
 ![screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
-
 
 These commmands are lazily evaluated so until we actually insert a document into the collection nothing is
 happening on the server.
