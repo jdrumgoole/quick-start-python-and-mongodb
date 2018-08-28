@@ -6,7 +6,7 @@ In the next four episodes we will take you through the standard
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operators that every database
 is expected to support. In this episode we will focus on **Create**.
 
-##Create
+## Create
 
 MongoDB has exact analogies to most of the concepts we know from SQL land.
 
@@ -46,7 +46,7 @@ Now we want to work with the Python driver. These examples are using Python 3.6.
 should work with versions as old as Python 2.7 without problems. 
 
 Unlike SQL databases, collections in MongoDB spring to life automatically as we name them. Let's
-look at how create create a client proxy, a database and a collection.
+look at how to create a client proxy, a database and a collection.
 
 <pre>
 (venv) JD10Gen:ep002 jdrumgoole$ <b>python</b>
@@ -72,23 +72,23 @@ True
 First we import the `pymongo` library <i>(1)</i>. (see [episode one](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md) for how to install the pymongo library)
 Then we create the [local client proxy object](http://api.mongodb.com/python/current/api/pymongo/mongo_client.html),
 `client = pymongo.MongoClient()` <i>(2)</i> . The client object manages a connection pool to the server and can be 
-used to set a number of operational parameters related to server connections.
+used to set many operational parameters related to server connections.
 We can leave the parameter list to the `MongoClient` call blank. The server by default listens on port `27017` and the
 client by default attempts to connect to `localhost:27017`. 
 
 Once we have a `client` object we can now create a database, **ep002** *(3)* and a collection, 
 **people_collection** <i>(4)</i>. We do not need an explicit DDL. We just name these objects and the driver 
-and server will ensure that they spring to life when a document  is inserted.
+and server will ensure that they spring to life when a document is inserted.
 
 A database is effectively a container for collections. A collection provides a container for documents.
 Neither the database nor the collection will be created on the server until you actually
 insert a document. If you check the server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
-you will see that their are no databases or collection on this cluster before the `insert_one` call. 
+you will see that their are no databases or collections on this server before the `insert_one` call. 
 
 ![screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
 
-These commmands are lazily evaluated so until we actually insert a document into the collection nothing is
-happening on the server.
+These commands are lazily evaluated. So, until we actually insert a document into the collection, nothing 
+happens on the server.
 
 Once we insert a document:
 
@@ -104,9 +104,20 @@ True
 >>>
 </pre>
 
-Every object that is inserted into a MongoDB database gets and automatically generated `_id` field. This field
+We will see that the database, the collection, and the document spring to life once the document 
+is inserted.
+
+![screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
+
+And we can see the document in the database.
+
+![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
+
+### _id Field
+
+Every object that is inserted into a MongoDB database gets an automatically generated `_id` field. This field
 is guaranteed to be unique for every document inserted into the collection and this unique property is enforced
-as the `_id` field is an [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
+as the `_id` field is [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
 and the [index is unique](https://docs.mongodb.com/manual/core/index-unique/). 
 The value of the `_id` field is defined as follows:
 
@@ -114,7 +125,7 @@ The value of the `_id` field is defined as follows:
 
 The `_id` field is generated on the client and for PyMongo you can see the generation code in the 
 [objectid.py](https://github.com/mongodb/mongo-python-driver/blob/master/bson/objectid.py) file. Just search
-for the ` def _generate` string. All MongoDB drivers generate `_id` fields on the client side. the `_id` field
+for the `def _generate` string. All MongoDB drivers generate `_id` fields on the client side. The `_id` field
 allows us to insert the same JSON object many times and allow each one to be uniquely identified. The `_id` 
 field even gives a temporal ordering and you can get this from an ObjectID via the 
 [generation_time](https://api.mongodb.com/python/2.7.1/api/bson/objectid.html) method.
@@ -128,18 +139,14 @@ datetime.datetime(2018, 8, 22, 9, 14, 36, tzinfo=<bson.tz_util.FixedOffset objec
 >>>
 </pre>
 
-We will see that the database, the collection and the document spring to life once the document 
-is inserted.
-
-![screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
-
-And we can see the document in the database.
-
-![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
-
 That is *create* in MongoDB. We started a `mongod` instance, created a `MongoClient` proxy, instantiated
 a database and a collection and finally make then spring to life by inserting a document. 
 
 Next up we will talk more abou *Read* part of CRUD. In MongoDB this is the `find` query which we saw a 
 little bit of earlier on in this episode.
 
+---
+
+For direct feedback please pose your questions on [twitter/jdrumgoole](https://www.twitter.com/jdrumgoole) that way everyone can see the answers.
+
+The best way to try out MongoDB is via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) our Database as a Service.
