@@ -2,6 +2,12 @@
 
 (You should set up your environment as described in [Episode 1]()) 
 
+In the next four episodes we will take you through the standard 
+[CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operators that every database
+is expected to support. In this episode we will focus on **Create**.
+
+##Create
+
 MongoDB has exact analogies to most of the concepts we know from SQL land.
 
 |  SQL           | MongoDB        |
@@ -19,16 +25,16 @@ can vary in the number of fields and their sub-structure compared to their prede
 
 Lets look at how we insert JSON documents into MongoDB. 
 
-First lets start a local single instance of `mongod`
+First lets start a local single instance of `mongod` using [m](https://github.com/aheckmann/m).
 <pre>
-$ <b>mkdir data</b>
-$ <b>mongod --dbpath data</b>
-2018-07-31T12:30:54.379+0100 I CONTROL  [main] Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'
-2018-07-31T12:30:54.393+0100 I CONTROL  [initandlisten] MongoDB starting : pid=6421 port=27017 dbpath=data 64-bit host=Joes-MacBook-Air.local
-2018-07-31T12:30:54.393+0100 I CONTROL  [initandlisten] db version v4.0.0-rc7
-2018-07-31T12:30:54.393+0100 I CONTROL  [initandlisten] git version: 7230641bb09b1ceb04c3135cf83a5044c4838906
-2018-07-31T12:30:54.393+0100 I CONTROL  [initandlisten] allocator: system
-<b>etc ...</b>
+$ <b>m use stable</b>
+2018-08-28T14:58:06.674+0100 I CONTROL  [main] Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'
+2018-08-28T14:58:06.689+0100 I CONTROL  [initandlisten] MongoDB starting : pid=43658 port=27017 dbpath=/data/db 64-bit host=JD10Gen.local
+2018-08-28T14:58:06.689+0100 I CONTROL  [initandlisten] db version v4.0.2
+2018-08-28T14:58:06.689+0100 I CONTROL  [initandlisten] git version: fc1573ba18aee42f97a3bb13b67af7d837826b47
+2018-08-28T14:58:06.689+0100 I CONTROL  [initandlisten] allocator: system
+
+<b><i>etc...</i></b>
 </pre>
 
 the `mongod` starts listening on port `27017` by default. As every MongoDB driver
@@ -37,7 +43,7 @@ defaults to connecting on `localhost:27017` we won't need to specify a
 explicitly in these early examples. 
 
 Now we want to work with the Python driver. These examples are using Python 3.6.5 but everything
-should work with versions as old as 2.7 without problems. 
+should work with versions as old as Python 2.7 without problems. 
 
 Unlike SQL databases, collections in MongoDB spring to life automatically as we name them. Let's
 look at how create create a client proxy, a database and a collection.
@@ -101,11 +107,14 @@ True
 Every object that is inserted into a MongoDB database gets and automatically generated `_id` field. This field
 is guaranteed to be unique for every document inserted into the collection and this unique property is enforced
 as the `_id` field is an [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
-and the index is unique. The value of the `_id` field is defined as follows:
+and the [index is unique](https://docs.mongodb.com/manual/core/index-unique/). 
+The value of the `_id` field is defined as follows:
+
 ![ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
+
 The `_id` field is generated on the client and for PyMongo you can see the generation code in the 
 [objectid.py](https://github.com/mongodb/mongo-python-driver/blob/master/bson/objectid.py) file. Just search
-for the ` def _generate`. All MongoDB drivers generate `_id` fields on the client side. the `_id` field
+for the ` def _generate` string. All MongoDB drivers generate `_id` fields on the client side. the `_id` field
 allows us to insert the same JSON object many times and allow each one to be uniquely identified. The `_id` 
 field even gives a temporal ordering and you can get this from an ObjectID via the 
 [generation_time](https://api.mongodb.com/python/2.7.1/api/bson/objectid.html) method.
