@@ -1,21 +1,20 @@
 # Setting Up Your PyMongo Environment
-
 Welcome to PyMongo Monday. This is the first in a series of regular blog posts that will introduce developers to 
-programming MongoDB using the Python programming language. It’s called PyMongo Monday because PyMongo is 
+programming MongoDB using the Python programming language. It’s called PyMongo Monday because 
+[PyMongo](https://api.mongodb.com/python/current/) is 
 the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact 
 with the MongoDB Server. Monday because we aim to release each new episode on Monday.
 
 To get started we need to install the toolchain that a typical MongoDB Python developer would expect to use.
 
 ## Installing m
-
 First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is 
 a tool to manage and use multiple installations of the MongoDB Server in parallel. It is an invaluable tool 
 if you want to try out the latest and greatest beta version but still continue mainline development 
 on out current stable release.
 
-The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager (which it turns out is not just for Node.js). 
-
+The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
+(which it turns out is not just for Node.js). 
 <pre>
 $ <b>sudo npm install -g m</b>
 Password:******
@@ -24,18 +23,18 @@ Password:******
 updated 1 package in 2.361s
 $
 </pre>
-
 If you can’t or don’t want to use npm you can download and install directly from the github 
 [repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) 
 there for details.
 
-For today we will use **m** to install the current stable production version (4.0.1 at the time of writing)  
-so we will run the **stable** command which installs the latest supported version of MongoDB ([4.0](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).
+For today we will use **m** to install the current stable production version 
+([4.0.2](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).  
+We run the **stable** command to achieve this.
 
 <pre>
 $ <b>m stable</b>
-MongoDB version 4.0.1 is not installed.
-Installation may take a while. Would you like to proceed? [y/n] **y**
+MongoDB version 4.0.2 is not installed.
+Installation may take a while. Would you like to proceed? [y/n] <b>y</b>
 ... installing binary
 
 ######################################################################## 100.0%
@@ -56,16 +55,18 @@ $
 To run the corresponding binary do **m use stable**
 
 <pre>
-$ <b>sudo m use stable --port 8000</b>
-2018-06-13T15:52:42.626+0100 I CONTROL  [initandlisten] MongoDB starting : pid=78058 port=8000 dbpath=/data/db 64-bit host=Joes-MacBook-Air.local
-2018-06-13T15:52:42.627+0100 I CONTROL  [initandlisten] db version v3.6.5
-2018-06-13T15:52:42.627+0100 I CONTROL  [initandlisten] git version: a20ecd3e3a174162052ff99913bc2ca9a839d618
-<b>&lt other server output &gt </b>
+$ <b>m use stable</b>
+2018-08-28T11:41:48.157+0100 I CONTROL  [main] Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'
+2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] MongoDB starting : pid=38524 port=27017 dbpath=/data/db 64-bit host=JD10Gen.local
+2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] db version v4.0.2
+2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] git version: fc1573ba18aee42f97a3bb13b67af7d837826b47
+<b><i>&lt other server output &gt</i></b>
 <b>...</b>
-2018-06-13T15:52:43.648+0100 I NETWORK  [initandlisten] waiting for connections on port 8000
+2018-06-13T15:52:43.648+0100 I NETWORK  [initandlisten] waiting for connections on port 27017
 </pre>
 
-Now that we have a server running we can confirm that it works by connecting via the mongo shell.
+Now that we have a server running we can confirm that it works by connecting via the 
+[mongo shell](https://docs.mongodb.com/manual/mongo/).
 
 <pre>
 $ <b>mongo</b>
@@ -109,14 +110,13 @@ We will learn how to setup access control and listen on a broader range of ports
 
 ## Installing the PyMongo Driver
 
-But this series is not about the MongoDB Shell, which uses Javascript as its coin of the realm, 
-it’s about Python. 
-
-So how would we connect to the database with Python?
+But this series is not about the MongoDB Shell, which uses JavaScript as its coin of the realm, 
+it’s about Python. How do we connect to the database with Python?
 
 First we need to install the MongoDB Python Driver, [PyMongo](https://docs.mongodb.com/ecosystem/drivers/). 
 In MongoDB parlance a driver is a language specific client library used to allow developers to 
-interact with the server in the idioms of their own programming language.
+interact with the server in the idiom of their own programming language.
+
 For Python that means the driver is installed using `pip`. In node.js the driver is 
 installed using `npm` and in Java you can use `maven`.
 
@@ -158,24 +158,27 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 </pre>
 
-First we import the PyMongo library *(1)*. The we create a local `client` object *(2)* that holds the connection pool and other status for this server. 
-We generally don’t want more than one `MongoClient` object per program as it provides its own 
-connection pool. 
+First we import the PyMongo library *(1)*. The we create a local `client` object *(2)* that holds the connection 
+pool and other status for this server. We generally don’t want more than one `MongoClient` object 
+per program as it provides its own connection pool. 
 
 Now we are ready to issue a command to the server. 
 In this case its the standard MongoDB server information command which is called rather 
-anachronistically `isMaster` *(3)*. **This is a hangover from the very early versions of MongoDB. 
-It appears in very earliest pre 1.0 versions of MongoDB  which is over ten years old at this stage. 
+anachronistically `isMaster` *(3)*. This is a hangover from the very early versions of MongoDB. 
+It appears in pre 1.0 versions of MongoDB  ()which is over ten years old at this stage). 
 The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
 format this in a more readable  way import the `pprint` library.
 
-That’s the end of episode one. We have installed MonogDB, started a, the Python client library (aka driver),
+#Conclusion
+That’s the end of episode one. We have installed MonogDB, installed the Python client library (aka driver),
 started a `mongod` server and established a connection between the client and server.
 
 Next week we will introduce CRUD operations on MongoDB starting with **Create**.
 
-For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole) that way everyone can see the answers. 
+For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole) 
+that way everyone can see the answers. 
 
 The best way to try out MongoDB is via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
  our Database as a Service. 
+ 
  
