@@ -169,7 +169,7 @@ It appears in pre 1.0 versions of MongoDB  ()which is over ten years old at this
 The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
 format this in a more readable  way import the `pprint` library.
 
-#Conclusion
+# Conclusion
 That’s the end of episode one. We have installed MonogDB, installed the Python client library (aka driver),
 started a `mongod` server and established a connection between the client and server.
 
