@@ -2,16 +2,16 @@
 Welcome to PyMongo Monday. This is the first in a series of regular blog posts that will introduce developers to 
 programming MongoDB using the Python programming language. It’s called PyMongo Monday because 
 [PyMongo](https://api.mongodb.com/python/current/) is 
-the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact 
+the name of the client library (in MongoDB speak we refer to it as a "driver") we use to interact 
 with the MongoDB Server. Monday because we aim to release each new episode on Monday.
 
-To get started we need to install the toolchain that a typical MongoDB Python developer would expect to use.
+To get started we need to install the toolchain used by a typical MongoDB Python developer.
 
 ## Installing m
 First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is 
 a tool to manage and use multiple installations of the MongoDB Server in parallel. It is an invaluable tool 
 if you want to try out the latest and greatest beta version but still continue mainline development 
-on out current stable release.
+on our current stable release.
 
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
 (which it turns out is not just for Node.js). 
@@ -117,7 +117,7 @@ First we need to install the MongoDB Python Driver, [PyMongo](https://docs.mongo
 In MongoDB parlance a driver is a language specific client library used to allow developers to 
 interact with the server in the idiom of their own programming language.
 
-For Python that means the driver is installed using `pip`. In node.js the driver is 
+For Python that means installing the driver with `pip`. In node.js the driver is 
 installed using `npm` and in Java you can use `maven`.
 
 <pre>
@@ -167,7 +167,7 @@ In this case its the standard MongoDB server information command which is called
 anachronistically `isMaster` *(3)*. This is a hangover from the very early versions of MongoDB. 
 It appears in pre 1.0 versions of MongoDB  ()which is over ten years old at this stage). 
 The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
-format this in a more readable  way import the `pprint` library.
+format this in a more readable way import the `pprint` library.
 
 #Conclusion
 That’s the end of episode one. We have installed MonogDB, installed the Python client library (aka driver),
