@@ -16,7 +16,7 @@ on out current stable release.
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
 (which it turns out is not just for Node.js). 
 <pre>
-$ <b>sudo npm install -g m</b>
+$ <b>npm install -g m</b>
 Password:******
 /usr/local/bin/m -> /usr/local/lib/node_modules/m/bin/m
 + m@1.4.1

@@ -7,7 +7,6 @@ In the next four episodes we will take you through the standard
 is expected to support. In this episode we will focus on **Create**.
 
 ##Create
-
 MongoDB has exact analogies to most of the concepts we know from SQL land.
 
 |  SQL           | MongoDB        |
@@ -76,8 +75,8 @@ used to set a number of operational parameters related to server connections.
 We can leave the parameter list to the `MongoClient` call blank. The server by default listens on port `27017` and the
 client by default attempts to connect to `localhost:27017`. 
 
-Once we have a `client` object we can now create a database, **ep002** *(3)* and a collection, 
-**people_collection** <i>(4)</i>. We do not need an explicit DDL. We just name these objects and the driver 
+Once we have a `client` object we can now create a database, `ep002` *(3)* and a collection, 
+`people_collection` <i>(4)</i>. We do not need an explicit DDL. We just name these objects and the driver 
 and server will ensure that they spring to life when a document  is inserted.
 
 A database is effectively a container for collections. A collection provides a container for documents.
@@ -130,15 +129,11 @@ datetime.datetime(2018, 8, 22, 9, 14, 36, tzinfo=<bson.tz_util.FixedOffset objec
 
 We will see that the database, the collection and the document spring to life once the document 
 is inserted.
-
 ![screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
-
 And we can see the document in the database.
-
 ![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
-
-That is *create* in MongoDB. We started a `mongod` instance, created a `MongoClient` proxy, instantiated
-a database and a collection and finally make then spring to life by inserting a document. 
+That is *create* in MongoDB. We started a `mongod` instance, created a `MongoClient` proxy, created
+a database and a collection and finally made then spring to life by inserting a document. 
 
 Next up we will talk more abou *Read* part of CRUD. In MongoDB this is the `find` query which we saw a 
 little bit of earlier on in this episode.
