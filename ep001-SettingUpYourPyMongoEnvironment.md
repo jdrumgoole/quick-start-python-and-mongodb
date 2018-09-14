@@ -2,16 +2,16 @@
 Welcome to PyMongo Monday. This is the first in a series of regular blog posts that will introduce developers to 
 programming MongoDB using the Python programming language. It’s called PyMongo Monday because 
 [PyMongo](https://api.mongodb.com/python/current/) is 
-the name of the client library (in MongoDB speak we refer to it as a "driver") we used to interact 
+the name of the client library (in MongoDB speak we refer to it as a "driver") we use to interact 
 with the MongoDB Server. Monday because we aim to release each new episode on Monday.
 
-To get started we need to install the toolchain that a typical MongoDB Python developer would expect to use.
+To get started we need to install the toolchain used by a typical MongoDB Python developer.
 
 ## Installing m
 First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is 
 a tool to manage and use multiple installations of the MongoDB Server in parallel. It is an invaluable tool 
 if you want to try out the latest and greatest beta version but still continue mainline development 
-on out current stable release.
+on our current stable release.
 
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
 (which it turns out is not just for Node.js). 
@@ -87,7 +87,7 @@ Server has startup warnings:
 2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
 2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten]
 
-&mdash&mdash&mdash
+---
 Enable MongoDB's free cloud-based monitoring service to collect and display
 metrics about your deployment (disk utilization, CPU, operation statistics,
 etc).
@@ -104,7 +104,7 @@ db.enableFreeMonitoring()
 >
 </pre>
 
-These warnings are standard. They flag that this database has no access controls setup by default and 
+These warnings are standard. They flag that this database has no access controls setup by default and, 
 that it is only listening to connections coming from the machine it is running on (*localhost*). 
 We will learn how to setup access control and listen on a broader range of ports in later episodes.
 
@@ -114,10 +114,10 @@ But this series is not about the MongoDB Shell, which uses JavaScript as its coi
 it’s about Python. How do we connect to the database with Python?
 
 First we need to install the MongoDB Python Driver, [PyMongo](https://docs.mongodb.com/ecosystem/drivers/). 
-In MongoDB parlance a driver is a language specific client library used to allow developers to 
+In MongoDB parlance a driver is a language-specific client library that allows developers to 
 interact with the server in the idiom of their own programming language.
 
-For Python that means the driver is installed using `pip`. In node.js the driver is 
+For Python that means installing the driver with `pip`. In node.js the driver is 
 installed using `npm` and in Java you can use `maven`.
 
 <pre>
@@ -158,27 +158,27 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 </pre>
 
-First we import the PyMongo library *(1)*. The we create a local `client` object *(2)* that holds the connection 
+First we import the PyMongo library *(1)*. Then we create a local `client` object *(2)* that holds the connection 
 pool and other status for this server. We generally don’t want more than one `MongoClient` object 
 per program as it provides its own connection pool. 
 
 Now we are ready to issue a command to the server. 
-In this case its the standard MongoDB server information command which is called rather 
+In this case it's the standard MongoDB server information command which is called rather 
 anachronistically `isMaster` *(3)*. This is a hangover from the very early versions of MongoDB. 
-It appears in pre 1.0 versions of MongoDB  ()which is over ten years old at this stage). 
+It appears in pre 1.0 versions of MongoDB  (which is over ten years old at this stage). 
 The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
-format this in a more readable  way import the `pprint` library.
+format this in a more readable way we import the `pprint` library.
 
-#Conclusion
-That’s the end of episode one. We have installed MonogDB, installed the Python client library (aka driver),
+# Conclusion
+That’s the end of episode one. We have installed MongoDB, installed the Python client library (aka driver),
 started a `mongod` server and established a connection between the client and server.
 
-Next week we will introduce CRUD operations on MongoDB starting with **Create**.
+Next week we will introduce CRUD operations on MongoDB, starting with **Create**.
 
-For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole) 
-that way everyone can see the answers. 
+For direct feedback please pose your questions on [twitter/jdrumgoole](https://twitter.com/jdrumgoole). 
+That way everyone can see the answers. 
 
 The best way to try out MongoDB is via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
- our Database as a Service. 
+ our fully managed Database as a Service available on AWS, Google Cloud Platform (CGP) and Azure. 
  
  
