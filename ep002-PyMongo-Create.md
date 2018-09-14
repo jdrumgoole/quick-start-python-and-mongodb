@@ -1,17 +1,12 @@
-# PyMongo Create
+# PyMongo Monday Episode 2 : Create
 
 (You should set up your environment as described in [Episode 1]()) 
 
 In the next four episodes we will take you through the standard 
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operators that every database
-is expected to support. In this episode we will focus on **Create**.
+is expected to support. In this episode we will focus on **Create** in CRUD.
 
-<<<<<<< HEAD
 ##Create
-=======
-## Create
-
->>>>>>> origin/master
 MongoDB has exact analogies to most of the concepts we know from SQL land.
 
 |  SQL           | MongoDB        |
