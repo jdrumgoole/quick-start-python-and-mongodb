@@ -4,9 +4,9 @@
 
 In the next four episodes we will take you through the standard 
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operators that every database
-is expected to support. In this episode we will focus on **Create** in CRUD.
+is expected to support. In this episode we will focus on the **Create** in CRUD.
 
-##Create
+##Terminology
 MongoDB has exact analogies to most of the concepts we know from SQL land.
 
 |  SQL           | MongoDB        |
@@ -18,10 +18,10 @@ MongoDB has exact analogies to most of the concepts we know from SQL land.
 | Join           | [$lookup](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)|
 | ACID Transactions | [ACID Transactions](https://docs.mongodb.com/manual/core/write-operations-atomicity/#multi-document-transactions)|
 
-The main difference is that in MongoDB collections represent a collection of [JSON](https://www.json.org/) 
+The main difference is that in MongoDB, collections represent a group of [JSON](https://www.json.org/) 
 documents. There are no constraints on the structure of the JSON inserted. Each new document inserted 
 can vary in the number of fields and their sub-structure compared to their predecessors. 
-
+##Create
 Lets look at how we insert JSON documents into MongoDB. 
 
 First lets start a local single instance of `mongod` using [m](https://github.com/aheckmann/m).
@@ -36,19 +36,21 @@ $ <b>m use stable</b>
 <b><i>etc...</i></b>
 </pre>
 
-the `mongod` starts listening on port `27017` by default. As every MongoDB driver
+The `mongod` starts listening on port `27017` by default. As every MongoDB driver
 defaults to connecting on `localhost:27017` we won't need to specify a 
-[connection string](https://docs.mongodb.com/manual/reference/connection-string/)
-explicitly in these early examples. 
+[connection string](https://docs.mongodb.com/manual/reference/connection-string/) explicitly in these early examples. 
 
-Now we want to work with the Python driver. These examples are using Python 3.6.5 but everything
-should work with versions as old as Python 2.7 without problems. 
+Now, we want to work with the Python driver. These examples are using Python 
+3.6.5 but everything should work with versions as old as Python 2.7 without 
+problems. 
 
-Unlike SQL databases, collections in MongoDB spring to life automatically as we name them. Let's
-look at how to create a client proxy, a database and a collection.
+Unlike SQL databases, databases and collections in MongoDB only have to be named 
+to be created. As we will
+see later this is a *lazy* creation process, and the database and corresponding 
+collection are actually only created when a document is inserted. 
 
 <pre>
-(venv) JD10Gen:ep002 jdrumgoole$ <b>python</b>
+$ <b>python</b>
 Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 03:03:55)
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
@@ -70,19 +72,22 @@ True
 
 First we import the `pymongo` library <i>(1)</i>. (see [episode one](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md) for how to install the pymongo library)
 Then we create the [local client proxy object](http://api.mongodb.com/python/current/api/pymongo/mongo_client.html),
-`client = pymongo.MongoClient()` <i>(2)</i> . The client object manages a connection pool to the server and can be 
-used to set many operational parameters related to server connections.
-We can leave the parameter list to the `MongoClient` call blank. The server by default listens on port `27017` and the
-client by default attempts to connect to `localhost:27017`. 
+`client = pymongo.MongoClient()` <i>(2)</i> . The client object manages a 
+connection pool to the server and can be used to set many operational 
+parameters related to server connections.We can leave the parameter 
+list to the `MongoClient` call blank. Remember, the server by default listens on 
+port `27017` and the client by default attempts to connect to `localhost:27017`. 
 
-Once we have a `client` object we can now create a database, `ep002` *(3)* and a collection, 
-`people_collection` <i>(4)</i>. We do not need an explicit DDL. We just name these objects and the driver 
-and server will ensure that they spring to life when a document  is inserted.
+Once we have a `client` object, we can now create a database, `ep002` *(3)* 
+and a collection, `people_collection` <i>(4)</i>. 
 
-A database is effectively a container for collections. A collection provides a container for documents.
-Neither the database nor the collection will be created on the server until you actually
-insert a document. If you check the server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
-you will see that their are no databases or collections on this server before the `insert_one` call. 
+##Using Compass to examine the database server
+A database is effectively a container for collections. A collection provides a 
+container for documents.Neither the database nor the collection will be 
+created on the server until you actually insert a document. If you check the 
+server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
+you will see that their are no databases or collections on this server 
+before the `insert_one` call. 
 
 ![screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
 
@@ -103,8 +108,7 @@ True
 >>>
 </pre>
 
-We will see that the database, the collection, and the document spring to life once the document 
-is inserted.
+We will see that the database, the collection, and the document are created.
 
 ![screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
 
@@ -112,12 +116,14 @@ And we can see the document in the database.
 
 ![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
 
-### _id Field
+##_id Field
 
-Every object that is inserted into a MongoDB database gets an automatically generated `_id` field. This field
-is guaranteed to be unique for every document inserted into the collection and this unique property is enforced
-as the `_id` field is [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
+Every object that is inserted into a MongoDB database gets an automatically 
+generated `_id` field. This fieldis guaranteed to be unique for every document 
+inserted into the collection. This unique property is enforced as the _id field 
+is [automatically indexed](https://docs.mongodb.com/manual/indexes/#default-id-index) 
 and the [index is unique](https://docs.mongodb.com/manual/core/index-unique/). 
+
 The value of the `_id` field is defined as follows:
 
 ![ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
@@ -137,11 +143,8 @@ datetime.datetime(2018, 8, 22, 9, 14, 36, tzinfo=<bson.tz_util.FixedOffset objec
 2018-08-22 09:14:36+00:00
 >>>
 </pre>
-We will see that the database, the collection and the document spring to life once the document 
-is inserted.
-![screen shot of compass with collection](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-collection.png)
-And we can see the document in the database.
-![screen shot of compass with document](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-with-doc.png)
+
+##Wrap Up
 That is *create* in MongoDB. We started a `mongod` instance, created a `MongoClient` proxy, created
 a database and a collection and finally made then spring to life by inserting a document.
 
@@ -153,3 +156,5 @@ little bit of earlier on in this episode.
 For direct feedback please pose your questions on [twitter/jdrumgoole](https://www.twitter.com/jdrumgoole) that way everyone can see the answers.
 
 The best way to try out MongoDB is via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) our Database as a Service.
+It’s free to get started with MongoDB Atlas so give it a try today.
+
