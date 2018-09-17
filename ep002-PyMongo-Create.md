@@ -112,7 +112,7 @@ and the [index is unique](https://docs.mongodb.com/manual/core/index-unique/).
 
 The value of the `_id` field is defined as follows:
 
-![ObjectID](https://github.com/jdrumgoole/PyMongo-Monday/raw/master/objectid.png)
+![ObjectID](https://github.com/jdrumgoole/PyMongo-Monday/raw/master/images/ep002-objectid.png)
 
 
 The `_id` field is generated on the client and you can see the PyMongo generation code in the 
