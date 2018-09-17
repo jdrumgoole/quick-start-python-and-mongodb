@@ -130,7 +130,7 @@ The value of the `_id` field is defined as follows:
 ![ObjectID](https://github.com/jdrumgoole/PyMongo-Monday/raw/master/objectid.png)
 
 
-The `_id` field is generated on the client and for PyMongo you can see the generation code in the 
+The `_id` field is generated on the client and you can see the PyMongo generation code in the 
 [objectid.py](https://github.com/mongodb/mongo-python-driver/blob/master/bson/objectid.py) file. Just search
 for the `def _generate` string. All MongoDB drivers generate `_id` fields on the client side. The `_id` field
 allows us to insert the same JSON object many times and allow each one to be uniquely identified. The `_id` 
