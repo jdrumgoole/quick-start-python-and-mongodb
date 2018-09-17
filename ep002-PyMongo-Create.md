@@ -6,21 +6,6 @@ In the next four episodes we will take you through the standard
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operators that every database
 is expected to support. In this episode we will focus on the **Create** in CRUD.
 
-##Terminology
-MongoDB has exact analogies to most of the concepts we know from SQL land.
-
-|  SQL           | MongoDB        |
-|--------------- |----------------|
-| Database       | [Database](https://docs.mongodb.com/manual/core/databases-and-collections/)       |
-| Table          | [Collection](https://docs.mongodb.com/manual/core/databases-and-collections/#collections)     |
-| Row            | [Document (JSON)](https://docs.mongodb.com/manual/core/document/)|
-| Indexes        | [Indexes](https://docs.mongodb.com/manual/indexes/)   |
-| Join           | [$lookup](https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)|
-| ACID Transactions | [ACID Transactions](https://docs.mongodb.com/manual/core/write-operations-atomicity/#multi-document-transactions)|
-
-The main difference is that in MongoDB, collections represent a group of [JSON](https://www.json.org/) 
-documents. There are no constraints on the structure of the JSON inserted. Each new document inserted 
-can vary in the number of fields and their sub-structure compared to their predecessors. 
 ##Create
 Lets look at how we insert JSON documents into MongoDB. 
 
