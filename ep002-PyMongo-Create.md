@@ -70,7 +70,7 @@ True
 >>>
 </pre>
 
-First we import the `pymongo` library <i>(1)</i>. (see [episode one](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md) for how to install the pymongo library)
+First we import the `pymongo` library <i>(1)</i>, (see [episode one](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md) for how to install the pymongo library).
 Then we create the [local client proxy object](http://api.mongodb.com/python/current/api/pymongo/mongo_client.html),
 `client = pymongo.MongoClient()` <i>(2)</i> . The client object manages a 
 connection pool to the server and can be used to set many operational 
@@ -79,14 +79,15 @@ list to the `MongoClient` call blank. Remember, the server by default listens on
 port `27017` and the client by default attempts to connect to `localhost:27017`. 
 
 Once we have a `client` object, we can now create a database, `ep002` *(3)* 
-and a collection, `people_collection` <i>(4)</i>. 
+and a collection, `people_collection` <i>(4)</i>. Note that we do not need an
+explicit DDL statement. 
 
 ##Using Compass to examine the database server
 A database is effectively a container for collections. A collection provides a 
 container for documents.Neither the database nor the collection will be 
 created on the server until you actually insert a document. If you check the 
 server by connecting [MongoDB Compass](https://www.mongodb.com/products/compass)
-you will see that their are no databases or collections on this server 
+you will see that there are no databases or collections on this server 
 before the `insert_one` call. 
 
 ![screen shot of compass at start](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-compass-at-start.png)
@@ -126,7 +127,8 @@ and the [index is unique](https://docs.mongodb.com/manual/core/index-unique/).
 
 The value of the `_id` field is defined as follows:
 
-![ObjectID](https://s3-eu-west-1.amazonaws.com/developer-advocacy-public/pymongo-monday/ep002-ObjectID.png)
+![ObjectID](https://github.com/jdrumgoole/PyMongo-Monday/raw/master/objectid.png)
+
 
 The `_id` field is generated on the client and for PyMongo you can see the generation code in the 
 [objectid.py](https://github.com/mongodb/mongo-python-driver/blob/master/bson/objectid.py) file. Just search
