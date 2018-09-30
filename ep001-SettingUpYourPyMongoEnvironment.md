@@ -16,7 +16,7 @@ on our current stable release.
 The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
 (which it turns out is not just for Node.js). 
 <pre>
-$ <b>sudo npm install -g m</b>
+$ <b>npm install -g m</b>
 Password:******
 /usr/local/bin/m -> /usr/local/lib/node_modules/m/bin/m
 + m@1.4.1
@@ -87,7 +87,7 @@ Server has startup warnings:
 2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
 2018-07-06T10:56:50.973+0100 I CONTROL  [initandlisten]
 
-&mdash&mdash&mdash
+---
 Enable MongoDB's free cloud-based monitoring service to collect and display
 metrics about your deployment (disk utilization, CPU, operation statistics,
 etc).
@@ -163,9 +163,9 @@ pool and other status for this server. We generally don’t want more than one `
 per program as it provides its own connection pool. 
 
 Now we are ready to issue a command to the server. 
-In this case its the standard MongoDB server information command which is called rather 
+In this case it's the standard MongoDB server information command which is called rather 
 anachronistically `isMaster` *(3)*. This is a hangover from the very early versions of MongoDB. 
-It appears in pre 1.0 versions of MongoDB  ()which is over ten years old at this stage). 
+It appears in pre 1.0 versions of MongoDB  (which is over ten years old at this stage). 
 The `isMaster` command returns a `dict` which details a bunch of server information. In order to 
 format this in a more readable way we import the `pprint` library.
 

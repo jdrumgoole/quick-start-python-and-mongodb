@@ -110,4 +110,4 @@ venv.bak/
 data/
 
 mongod.pid
-
+.DS_Store
