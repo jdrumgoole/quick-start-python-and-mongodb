@@ -9,14 +9,14 @@ the Read part of CRUD. MongoDB provides a query interface
 through the [find](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.find) 
 function.
 
-We are going to demonstrate `Read` by doing finds on a collection
-hosted in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). The MongoDB connection string for
-the collection we are going to use is:
+We are going to demonstrate `Read` by doing find queries on a collection
+hosted in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). The MongoDB 
+connection string is:
 
 `mongodb+srv://demo:demo@demodata-rgl39.mongodb.net/test?retryWrites=true`
 
-This is a cluster run a database called `demo` with a single collection 
-called `zipcodes`. Every ZIP code in the US is in this database.
+This is a cluster running a database called *demo* with a single collection 
+called *zipcodes*. Every ZIP code in the US is in this database.
 
 To connect to this cluster we are going to use the Python shell.
 
@@ -39,16 +39,16 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-The `find_one` querywill get the first record in the collection. You can see 
-the structure of the fields in the document. The `_id` is the zipcode. The 
-`city` is the city name. The `loc` is the GPS coordindates of each zipcode. T
+The `find_one` query will get the first record in the collection. You can see 
+the structure of the fields in the returned document. The `_id` is the zipcode. 
+The `city` is the city name. The `loc` is the GPS coordindates of each zipcode. T
 he `pop` is the population size and the `state` is the two letter state code. 
 We are connecting with the default user `demo` with the password `demo`. This
 user only has read-only access to this database and collection.
 
-So what if we want to select all the zipcodes for a particular city?
+So what if we want to select all the ZIP codes for a particular city?
 
-This one is easy. Querying in MongoDB consists of constructing a partial
+Querying in MongoDB consists of constructing a partial
 JSON document that matches the fields you want to select on. So to get
 all the zipcodes in the city of PALMER we use the following query
 
@@ -62,7 +62,8 @@ Note we are using `find()` rather than `find_one()` as we want to return
 all the matching documents. In this case `find()` will return a 
 [cursor](http://api.mongodb.com/python/current/api/pymongo/cursor.html). 
 
-To print the cursor contents just keep calling `.next()` on it as follows:
+To print the cursor contents just keep calling `.next()` on the cursor 
+as follows:
 
 ```python
 >>> cursor=zipcodes.find({'city': 'PALMER'})
@@ -175,8 +176,8 @@ operators.
 >>>
 ```
 
-Again combinations of `$lt` and `$gt` are combined as a boolean `and`. if you
-need different logic you can use the `boolean operators`.
+Again sets of `$lt` and `$gt` are combined as a boolean `and`. if you
+need different logic you can use the [boolean operators](https://docs.mongodb.com/manual/reference/operator/query-logical/).
 
 # Conclusion
 
@@ -192,7 +193,7 @@ Give the query language a spin with the Python shell using the tools we
 outlined above. The complete zip codes data set is publicly available for read 
 queries at the MongoDB URI:
 
-mongodb+srv://demo:demo@demodata-rgl39.mongodb.net/test?retryWrites=true"
+**mongodb+srv://demo:demo@demodata-rgl39.mongodb.net/test?retryWrites=true"**
 
 Try [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) via the free-tier 
 today. A free MongoDB cluster for your own personal use forever!
