@@ -1,4 +1,4 @@
-# PyMongo - Episode 3 - Create
+# PyMongo Monday - Episode 3 - Read
 
 Previously we covered:
  * Episode 1 : [Setting Up Your MongoDB Environment](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md)
