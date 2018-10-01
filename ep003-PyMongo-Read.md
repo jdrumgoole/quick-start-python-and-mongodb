@@ -1,19 +1,22 @@
 # PyMongo - Episode 3 - Create
 
 Previously we covered:
- * Episode 1 : Setting Up Your MongoDB Environment
- * Episode 2 : CRUD - Create
+ * Episode 1 : [Setting Up Your MongoDB Environment](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md)
+ * Episode 2 : [CRUD - Create](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep002-PyMongo-Create.md)
  
 In this episode (episode 3) we are are going to cover
 the Read part of CRUD. MongoDB provides a query interface
 through the [find](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.find) 
 function.
 
-We are going to demonstrate by doing finds on a collection
-hosted in MongoDB Atlas. The MongoDB connection string for
+We are going to demonstrate `Read` by doing finds on a collection
+hosted in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). The MongoDB connection string for
 the collection we are going to use is:
 
 `mongodb+srv://demo:demo@demodata-rgl39.mongodb.net/test?retryWrites=true`
+
+This is a cluster run a database called `demo` with a single collection 
+called `zipcodes`. Every ZIP code in the US is in this database.
 
 To connect to this cluster we are going to use the Python shell.
 
@@ -36,14 +39,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-Here we are connecting to a a MongoDB collection running in a public Atlas
-cluster that contains all the ZIP codes for the USA. the `find_one` query
-will get the first record in the collection. You can see the structure
-of the fields in the document. The `_id` is the zipcode. The `city` is the city
-name. The `loc` is the GPS coordindates of each zipcode. the `pop` is the
-population size and the `state` is the two letter state code. We are
-connecting with the default user `demo` with the password `demo`. This
-user only have read-only access to this database and collection.
+The `find_one` querywill get the first record in the collection. You can see 
+the structure of the fields in the document. The `_id` is the zipcode. The 
+`city` is the city name. The `loc` is the GPS coordindates of each zipcode. T
+he `pop` is the population size and the `state` is the two letter state code. 
+We are connecting with the default user `demo` with the password `demo`. This
+user only has read-only access to this database and collection.
 
 So what if we want to select all the zipcodes for a particular city?
 
@@ -59,7 +60,7 @@ all the zipcodes in the city of PALMER we use the following query
 
 Note we are using `find()` rather than `find_one()` as we want to return
 all the matching documents. In this case `find()` will return a 
-cursor. 
+[cursor](http://api.mongodb.com/python/current/api/pymongo/cursor.html). 
 
 To print the cursor contents just keep calling `.next()` on it as follows:
 
@@ -85,12 +86,13 @@ Traceback (most recent call last):
 StopIteration
 ```
 
-As you can see cursors follow the Python iterator protocol and will raise a 
-`StopIteration` exception when the cursor is exhausted. 
+As you can see cursors follow the Python [iterator protocol](https://wiki.python.org/moin/Iterator) 
+and will raise a `StopIteration` exception when the cursor is exhausted. 
 
-Calling `.next()` continously is a bit of a drag. Instead you can import
-the `pymongo_shell` package and call the `print_cursor()` function. It will
-print out twenty records at a time.
+However, calling `.next()` continously is a bit of a drag. Instead you can 
+import the [`pymongo_shell`](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep003/pymongo_shell.py) 
+package and call the `print_cursor()` function. It will print out twenty 
+records at a time.
 
 ```python
 >>> from pymongo_shell import print_cursor
@@ -103,9 +105,10 @@ print out twenty records at a time.
 {'_id': '75152', 'city': 'PALMER', 'loc': [-96.679429, 32.438714], 'pop': 2605, 'state': 'TX'}
 >>>
 ```
-If we don't need all the fields in the doc we can use projection to remove 
-some fields. This is a second doc argument to the `find()` function. This 
-doc can specify the fields to return explicitly.
+If we don't need all the fields in the doc we can use 
+[projection](https://docs.mongodb.com/v3.2/tutorial/project-fields-from-query-results/) 
+to remove some fields. This is a second doc argument to the `find()` function. 
+This doc can specify the fields to return explicitly.
 
 ```python
 >>> print_cursor(zipcodes.find({'city': 'PALMER'}, {'city':1,'pop':1}))
@@ -153,7 +156,9 @@ To pick documents with one field `or` the other we can use the `$or` operator.
 {'_id': '01929', 'city': 'ESSEX', 'loc': [-70.782794, 42.628629], 'pop': 3260, 'state': 'MA'}
 Hit Return to continue
 ```
-We can do range selections by using the `$lt` and `$gt` operators.
+We can do range selections by using the [`$lt`](https://docs.mongodb.com/manual/reference/operator/query/lt/#op._S_lt)
+and [`$gt`](https://docs.mongodb.com/manual/reference/operator/query/gt/)
+operators.
 
 ```python
 >>> print_cursor(zipcodes.find({'pop' : { '$lt':8, '$gt':5}}))
@@ -173,9 +178,13 @@ We can do range selections by using the `$lt` and `$gt` operators.
 Again combinations of `$lt` and `$gt` are combined as a boolean `and`. if you
 need different logic you can use the `boolean operators`.
 
+# Conclusion
+
 Today we have seen how to query documents using a query template, how to reduce
 the output using projections and how to create more complex queries using 
 boolean and `$lt` and `$gt` operators.
+
+Next time we will talk about the Update portion of CRUD.
 
 MongoDB has a very rich and full featured query language including support 
 for querying using full-text, geo-spatial coordinates and nested queries. 
