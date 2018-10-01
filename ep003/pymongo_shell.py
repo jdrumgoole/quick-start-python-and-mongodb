@@ -16,16 +16,24 @@ def get_collection(host, db_name, collection_name ):
     return collection
 
 
-def print_cursor(cursor, buffer_size=20):
+def print_cursor(cursor, plain_print=True, buffer_size=20):
     try:
         buffer_count = 0
         for doc in cursor:
-            for line in pprint.pformat(doc).splitlines():
-                print(line)
+            if len(str(doc)) < 80 or plain_print:
+                print(doc)
                 buffer_count += 1
                 if buffer_count == buffer_size:
                     print("Hit Return to continue")
-                    x = input()
+                    _ = input()
+                    buffer_count = 0
+            else:
+                for line in pprint.pformat(doc).splitlines():
+                    print(line)
+                    buffer_count += 1
+                if buffer_count == buffer_size:
+                    print("Hit Return to continue")
+                    _ = input()
                     buffer_count = 0
     except KeyboardInterrupt:
         return
