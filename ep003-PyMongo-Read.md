@@ -1,23 +1,15 @@
-# PyMongo Monday - Episode 3 - Read
-
 Previously we covered:
  * Episode 1 : [Setting Up Your MongoDB Environment](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep001-SettingUpYourPyMongoEnvironment.md)
  * Episode 2 : [CRUD - Create](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep002-PyMongo-Create.md)
  
-In this episode (episode 3) we are are going to cover
-the Read part of CRUD. MongoDB provides a query interface
-through the [find](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.find) 
-function.
-
+In this episode (episode 3) we are are going to cover the Read part of CRUD. MongoDB provides a query interface through the [find](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.find) function.
 We are going to demonstrate `Read` by doing find queries on a collection
 hosted in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). The MongoDB 
 connection string is:
 
 `mongodb+srv://demo:demo@demodata-rgl39.mongodb.net/test?retryWrites=true`
 
-This is a cluster running a database called *demo* with a single collection 
-called *zipcodes*. Every ZIP code in the US is in this database.
-
+This is a cluster running a database called *demo* with a single collection called *zipcodes*. Every ZIP code in the US is in this database.
 To connect to this cluster we are going to use the Python shell.
 
 ```python
@@ -38,19 +30,15 @@ Type "help", "copyright", "credits" or "license" for more information.
 {'_id': '01069', 'city': 'PALMER', 'loc': [-72.328785, 42.176233], 'pop': 9778, 'state': 'MA'}
 >>>
 ```
-
 The `find_one` query will get the first record in the collection. You can see 
-the structure of the fields in the returned document. The `_id` is the zipcode. 
-The `city` is the city name. The `loc` is the GPS coordindates of each zipcode. T
-he `pop` is the population size and the `state` is the two letter state code. 
+the structure of the fields in the returned document. The `_id` is the ZIP code. 
+The `city` is the city name. The `loc` is the GPS coordinates of each ZIP code. The `pop` is the population size and the `state` is the two letter state code. 
 We are connecting with the default user `demo` with the password `demo`. This
 user only has read-only access to this database and collection.
 
 So what if we want to select all the ZIP codes for a particular city?
 
-Querying in MongoDB consists of constructing a partial
-JSON document that matches the fields you want to select on. So to get
-all the zipcodes in the city of PALMER we use the following query
+Querying in MongoDB consists of constructing a partial JSON document that matches the fields you want to select on. So to get all the ZIP codes in the city of PALMER we use the following query
 
 ```Python
 >>> zipcodes.find({'city': 'PALMER'})
@@ -87,13 +75,10 @@ Traceback (most recent call last):
 StopIteration
 ```
 
-As you can see cursors follow the Python [iterator protocol](https://wiki.python.org/moin/Iterator) 
-and will raise a `StopIteration` exception when the cursor is exhausted. 
+As you can see cursors follow the Python [iterator protocol](https://wiki.python.org/moin/Iterator) and will raise a `StopIteration` exception when the cursor is exhausted. 
 
 However, calling `.next()` continously is a bit of a drag. Instead you can 
-import the [`pymongo_shell`](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep003/pymongo_shell.py) 
-package and call the `print_cursor()` function. It will print out twenty 
-records at a time.
+import the [`pymongo_shell`](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep003/pymongo_shell.py) package and call the `print_cursor()` function. It will print out twenty records at a time.
 
 ```python
 >>> from pymongo_shell import print_cursor
@@ -107,9 +92,7 @@ records at a time.
 >>>
 ```
 If we don't need all the fields in the doc we can use 
-[projection](https://docs.mongodb.com/v3.2/tutorial/project-fields-from-query-results/) 
-to remove some fields. This is a second doc argument to the `find()` function. 
-This doc can specify the fields to return explicitly.
+[projection](https://docs.mongodb.com/v3.2/tutorial/project-fields-from-query-results/) to remove some fields. This is a second doc argument to the `find()` function. This doc can specify the fields to return explicitly.
 
 ```python
 >>> print_cursor(zipcodes.find({'city': 'PALMER'}, {'city':1,'pop':1}))
