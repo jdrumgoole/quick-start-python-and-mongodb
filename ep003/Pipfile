@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 pymongo = "*"
+dnspython = "*"
+ipython = "*"
 
 [dev-packages]
 
