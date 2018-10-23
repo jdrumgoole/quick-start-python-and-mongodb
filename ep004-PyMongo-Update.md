@@ -96,8 +96,8 @@ create that field if it  doesn't exist in the document. So we could add
 a new field by doing:
 
 ```python
->>> zipcodes.update( {"_id" : "01001"}, {"$set" : { "population_record" : []}})
-{'n': 1, 'nModified': 1, 'ok': 1.0, 'updatedExisting': True}
+>>> zipcodes.update_one( {"_id" : "01001"}, {"$set" : { "population_record" : []}})
+<pymongo.results.UpdateResult object at 0x1042dc488>
 >>> zipcodes.find_one({"_id" : "01001"})
 {'_id': '01001', 'city': 'AGAWAM', 'loc': [-72.622739, 42.070206], 'pop': 16769, 'state': 'MA', 'population_record': []}
 >>>
@@ -142,6 +142,38 @@ operator to push new elements onto the end of the array `population_record`.
 
 You can see how we use `pprint` to produce the output in slightly more
 readable format. 
+
+If we want to apply updates to more than one record we use the 
+[`update_many`](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.update_many) 
+to apply changes to more than one document. Now if the filter applies to more
+than one document the changes will be applied to each document. So imagine
+we wanted to add the city sales tax to each city. first we want to add the 
+city sales tax to all the zipcode regions in New York.
+
+```python
+>>> zipcodes.update_many( {'city': "NEW YORK"}, { "$set" : { "sales tax" : 4.5 }})
+<pymongo.results.UpdateResult object at 0x1042dcd88>
+>>> zipcodes.find( {"city": "NEW YORK"})
+<pymongo.cursor.Cursor object at 0x101e09410>
+>>> cursor=zipcodes.find( {"city": "NEW YORK"})
+>>> cursor.next()
+{u'city': u'NEW YORK', u'loc': [-73.996705, 40.74838], u'sales tax': 4.5, u'state': u'NY', u'pop': 18913, u'_id': u'10001'}
+>>> cursor.next()
+{u'city': u'NEW YORK', u'loc': [-73.987681, 40.715231], u'sales tax': 4.5, u'state': u'NY', u'pop': 84143, u'_id': u'10002'}
+>>> cursor.next()
+{u'city': u'NEW YORK', u'loc': [-73.989223, 40.731253], u'sales tax': 4.5, u'state': u'NY', u'pop': 51224, u'_id': u'10003'}
+>>>
+```
+
+The final kind of `update` operation we want to talk about is `upsert`. We can 
+add the `upsert` flag to any update operation to do an insert of the target
+document even when it doesn't match. When is this useful?
+
+Imagine we have one collection with each document containing a history
+of the zip code population in an array as in the example above. Now we also
+want a collection with  the original zip data and just the current population. 
+
+
 
 
 
