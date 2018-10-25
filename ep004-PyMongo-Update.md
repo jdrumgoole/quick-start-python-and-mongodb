@@ -3,9 +3,9 @@
 This is part 4 of PyMongo Monday. Previously we have
 covered:
 
- * EP1 - Setting up your MongoDB Environment
- * EP2 - Create - the C in CRUD
- * EP2 - Read - the R in CRUD
+ * EP1 - [Setting up your MongoDB Environment](https://www.mongodb.com/blog/post/pymongo-monday-setting-up-your-pymongo-environment)
+ * EP2 - [Create - the C in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-pymongo-create)
+ * EP2 - [Read - the R in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-episode-3-read)
 
  
 We are now into *Update*, the *U* in CRUD. The key aspect of update is the 
@@ -177,7 +177,7 @@ As we collect new population stats zipcode by zipcode we want to update
 the `zipcodes_new` collection with new documents containing the updated zipcode 
 data. In order to simplify this process we can do the updates as an `upsert`.
 
-Below is a fragment of code from [update_population.py]
+Below is a fragment of code from [update_population.py](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep004/update_population.py)
 ```python
 zip_doc = zipcodes.find_one({"_id": args.zipcode})
 zip_doc["pop"] = {"pop": args.pop, "timestamp": args.date}
@@ -185,7 +185,20 @@ zipcodes_new.update({"_id":args.zipcode}, zip_doc, upsert=True)
 print("New zipcode data: " + zip_doc["_id"])
 pprint.pprint(zip_doc)
 ```
+The `upsert=True` flag ensures that if we don't match the initial clause 
+`{"_id":args.zipcode}` we will still insert the `zip_doc` doc. This is a common
+pattern for `upsert` usage: Initially we insert based on a unique key. As the
+the number of inserts grows the likelihood that we will be updating an
+existing key as opposed to inserting a new key grows. the `upsert=True` flag 
+allows us to handle both situations in a single `update` statement.
 
+There is a lot more to [update](https://docs.mongodb.com/manual/reference/method/db.collection.update/)
+and will return to `update` later in the series. For now just remember that
+`update` is generally used for mutating existing documents using a range 
+of [update operators](https://docs.mongodb.com/manual/reference/operator/update/#id1).
+
+Next time we will complete our first pass over CRUD operations with the 
+final function [delete](https://docs.mongodb.com/manual/tutorial/remove-documents/)
 
 
  
