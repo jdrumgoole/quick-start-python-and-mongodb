@@ -169,9 +169,28 @@ The final kind of `update` operation we want to talk about is `upsert`. We can
 add the `upsert` flag to any update operation to do an insert of the target
 document even when it doesn't match. When is this useful?
 
-Imagine we have one collection with each document containing a history
-of the zip code population in an array as in the example above. Now we also
-want a collection with  the original zip data and just the current population. 
+Imagine we have a read-only collection of zipcode data and we want to create a 
+new collection (call it `zipcodes_new`) that contains updates to the zipcodes
+that contain changes in population.
+
+As we collect new population stats zipcode by zipcode we want to update 
+the `zipcodes_new` collection with new documents containing the updated zipcode 
+data. In order to simplify this process we can do the updates as an `upsert`.
+
+Below is a fragment of code from [update_population.py]
+```python
+zip_doc = zipcodes.find_one({"_id": args.zipcode})
+zip_doc["pop"] = {"pop": args.pop, "timestamp": args.date}
+zipcodes_new.update({"_id":args.zipcode}, zip_doc, upsert=True)
+print("New zipcode data: " + zip_doc["_id"])
+pprint.pprint(zip_doc)
+```
+
+
+
+ 
+
+
 
 
 
