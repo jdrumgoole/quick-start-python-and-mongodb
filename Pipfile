@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 pymongo = "*"
+mimesis = "*"
+dateutils = "*"
 
 [dev-packages]
 
