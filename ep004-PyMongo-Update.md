@@ -18,7 +18,7 @@ the `pymongo` driver this is achieved with two functions:
 Each update operation can take a range of `update operators` that
 define how we can mutate a document during update. 
 
-Lets get a copy of the zipcode database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud).
+Lets get a copy of the `zipcode` database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud).
 As our copy hosted in Atlas is not writable we can't test `update` directly on
 it.
  
@@ -48,7 +48,7 @@ $ mongorestore
 2018-10-22T01:19:20.364+0100	done
 ```
 
-You will now have a `demo` database on your local `mongod` with single
+You will now have a `demo` database on your local `mongod` with a single
 collection called `zipcodes`.
 
 ```python
@@ -79,7 +79,7 @@ Each document in this database has the same format:
 ```
 
 Let's say we want to change the population to reflect the most [current value](https://www.unitedstateszipcodes.org/01001/#stats).
-Today the population of 01001 is approximately 16769. to change the value we
+Today the population of 01001 is approximately 16769. To change the value we
 would execute the following update.
 
 ```python
@@ -92,8 +92,7 @@ would execute the following update.
 
 Here we see the [`$set`](https://docs.mongodb.com/manual/reference/operator/update/set/#up._S_set)
 operator in action. The `$set` operator will set a field to a new value or
-create that field if it  doesn't exist in the document. So we could add 
-a new field by doing:
+create that field if it doesn't exist in the document. We add a new field by doing:
 
 ```python
 >>> zipcodes.update_one( {"_id" : "01001"}, {"$set" : { "population_record" : []}})
@@ -105,7 +104,7 @@ a new field by doing:
 
 Here we are adding a new field called `population_record`. This field is 
 an array field and has been set to the empty array for now. Now we can 
-update the array with a history of the population for the zip code area.
+update the array with a history of the population for the ZIP Code area.
 
 ```python
 >>> zipcodes.update_one({"_id" : "01001"}, { "$push" : { "population_record" : { "pop" : 15338, "timestamp": None }}})
@@ -143,12 +142,12 @@ operator to push new elements onto the end of the array `population_record`.
 You can see how we use `pprint` to produce the output in a slightly more
 readable format. 
 
-If we want to apply updates to more than one record we use the 
+If we want to apply updates to more than one record we use 
 [`update_many`](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.update_many) 
 to apply changes to more than one document. Now if the filter applies to more
 than one document the changes will be applied to each document. So imagine
 we wanted to add the city sales tax to each city. First, we want to add the 
-city sales tax to all the zipcode regions in New York.
+city sales tax to all the ZIP Code regions in New York.
 
 ```python
 >>> zipcodes.update_many( {'city': "NEW YORK"}, { "$set" : { "sales tax" : 4.5 }})
@@ -169,12 +168,12 @@ The final kind of `update` operation we want to talk about is `upsert`. We can
 add the `upsert` flag to any update operation to do an insert of the target
 document even when it doesn't match. When is this useful?
 
-Imagine we have a read-only collection of zipcode data and we want to create a 
-new collection (call it `zipcodes_new`) that contains updates to the zipcodes
+Imagine we have a read-only collection of ZIP Code data and we want to create a 
+new collection (call it `zipcodes_new`) that contains updates to the ZIP Codes
 that contain changes in population.
 
-As we collect new population stats zipcode by zipcode we want to update 
-the `zipcodes_new` collection with new documents containing the updated zipcode 
+As we collect new population stats ZIP Code by ZIP Code we want to update 
+the `zipcodes_new` collection with new documents containing the updated ZIP Code 
 data. In order to simplify this process we can do the updates as an `upsert`.
 
 Below is a fragment of code from [update_population.py](https://github.com/jdrumgoole/PyMongo-Monday/blob/master/ep004/update_population.py)
@@ -193,7 +192,7 @@ existing key as opposed to inserting a new key grows. the `upsert=True` flag
 allows us to handle both situations in a single `update` statement.
 
 There is a lot more to [update](https://docs.mongodb.com/manual/reference/method/db.collection.update/)
-and will return to `update` later in the series. For now just remember that
+and I will return to `update` later in the series. For now just remember that
 `update` is generally used for mutating existing documents using a range 
 of [update operators](https://docs.mongodb.com/manual/reference/operator/update/#id1).
 
