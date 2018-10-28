@@ -1,7 +1,6 @@
 # PyMongo Monday - EP03 - Update
 
-This is part 4 of PyMongo Monday. Previously we have
-covered:
+This is part 4 of PyMongo Monday. Previously we have covered:
 
  * EP1 - [Setting up your MongoDB Environment](https://www.mongodb.com/blog/post/pymongo-monday-setting-up-your-pymongo-environment)
  * EP2 - [Create - the C in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-pymongo-create)
@@ -10,20 +9,20 @@ covered:
  
 We are now into *Update*, the *U* in CRUD. The key aspect of update is the 
 ability to change a document in place. In order for this to happen we must
-have some way to select and document and change parts of that document.In
-the `pymongo` driver this is achieved with two types of functions:
+have some way to select the document and change parts of that document. In
+the `pymongo` driver this is achieved with two functions:
  
- * `update`: [updateOne](http://api.mongodb.com/python/current/api/pymongo/operations.html#pymongo.operations.UpdateOne), 
- [updateMany](http://api.mongodb.com/python/current/api/pymongo/operations.html#pymongo.operations.UpdateMany)
+ * `[update_one]`(http://api.mongodb.com/python/current/api/pymongo/operations.html#pymongo.operations.UpdateOne), 
+ * `[update_many]`(http://api.mongodb.com/python/current/api/pymongo/operations.html#pymongo.operations.UpdateMany)
  
 Each update operation can take a range of `update operators` that
 define how we can mutate a document during update. 
 
+Lets get a copy of the zipcode database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud).
+As our copy hosted in Atlas is not writable we can't test `update` directly on
+it.
  
-Lets get a copy of the ZIPs database as our copy hosted in Atlas is not
-writable so we can't test `update`.
- 
-We can take a copy with this simple script:
+However, we can create a local copy with this simple script:
  
  ```bash
  $ mongodump --host demodata-shard-0/demodata-shard-00-00-rgl39.mongodb.net:27017,demodata-shard-00-01-rgl39.mongodb.net:27017,demodata-shard-00-02-rgl39.mongodb.net:27017 --ssl --username readonly --password readonly --authenticationDatabase admin --db demo
@@ -35,7 +34,8 @@ This will create a backup of the data in a `dump` directory in the current
 working directory.
 
 to restore the data to a local `mongod` make sure you are running `mongod` 
-locally and just run `mongorestore` 
+locally and just run `mongorestore` in the same directory as you ran
+`mongodump`.
 
 ```bash
 $ mongorestore
@@ -73,13 +73,13 @@ Each document in this database has the same format:
  '_id': '01001',                  # ZIP code
  'city': 'AGAWAM',                # City name
  'loc': [-72.622739, 42.070206],  # Geo Spatial Coordinates
- 'pop': 15338,                    # Population of zip code        
- 'state': 'MA',                   # State
+ 'pop': 15338,                    # Population of within zip code        
+ 'state': 'MA',                   # Two letter state code (MA = Massachusetts)
 }
 ```
 
-Lets say we want to change the population to reflect the most [current value](https://www.unitedstateszipcodes.org/01001/#stats).
-Today the population if 01001 is approximately 16769. to change the value we
+Let's say we want to change the population to reflect the most [current value](https://www.unitedstateszipcodes.org/01001/#stats).
+Today the population of 01001 is approximately 16769. to change the value we
 would execute the following update.
 
 ```python
@@ -140,14 +140,14 @@ other value today so we can set that timestamp to the current time. In both
 cases we use the [`$push`](https://docs.mongodb.com/manual/reference/operator/update/push/#up._S_push)
 operator to push new elements onto the end of the array `population_record`.
 
-You can see how we use `pprint` to produce the output in slightly more
+You can see how we use `pprint` to produce the output in a slightly more
 readable format. 
 
 If we want to apply updates to more than one record we use the 
 [`update_many`](http://api.mongodb.com/python/current/api/pymongo/collection.html#pymongo.collection.Collection.update_many) 
 to apply changes to more than one document. Now if the filter applies to more
 than one document the changes will be applied to each document. So imagine
-we wanted to add the city sales tax to each city. first we want to add the 
+we wanted to add the city sales tax to each city. First, we want to add the 
 city sales tax to all the zipcode regions in New York.
 
 ```python
