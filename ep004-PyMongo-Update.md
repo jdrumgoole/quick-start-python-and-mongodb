@@ -1,4 +1,4 @@
-# PyMongo Monday - EP03 - Update
+# PyMongo Monday - Episode 3 - Update
 
 This is part 4 of PyMongo Monday. Previously we have covered:
 
