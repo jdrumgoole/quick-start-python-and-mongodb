@@ -8,7 +8,7 @@ import pprint
 import pymongo
 
 
-def get_collection(host, db_name, collection_name ):
+def get_collection(host, db_name, collection_name):
 
     client = pymongo.MongoClient(host=host)
     db = client[db_name]
