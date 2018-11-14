@@ -4,8 +4,10 @@ import shutil
 
 from pymongo import MongoClient
 
+
 def print_cursor(cursor, pretty_print=False):
-    (columns, lines) = shutil.get_terminal_size(fallback=(80, 24))
+
+    columns, lines = shutil.get_terminal_size(fallback=(80, 24))
     try:
         line_count = 0
         for doc in cursor:
@@ -25,7 +27,7 @@ def print_cursor(cursor, pretty_print=False):
                     _ = input()
                     line_count = 0
 
-            (columns, lines) = shutil.get_terminal_size(fallback=(80, 24))
+            columns, lines = shutil.get_terminal_size(fallback=(80, 24))
 
     except KeyboardInterrupt:
         return
