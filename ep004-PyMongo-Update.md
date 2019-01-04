@@ -3,7 +3,7 @@ This is part 4 of PyMongo Monday. Previously we have covered:
 
  * EP1 - [Setting up your MongoDB Environment](https://www.mongodb.com/blog/post/pymongo-monday-setting-up-your-pymongo-environment)
  * EP2 - [Create - the C in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-pymongo-create)
- * EP2 - [Read - the R in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-episode-3-read)
+ * EP3 - [Read - the R in CRUD](https://www.mongodb.com/blog/post/pymongo-monday-episode-3-read)
 
  
 We are now into *Update*, the *U* in CRUD. The key aspect of update is the 
