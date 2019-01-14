@@ -44,8 +44,22 @@ any time by runnning the `mongorestore --drop` command again. The `--drop` flag
 ensures that we remove the database and collection before restoring so we
 always end up with a single set of valid ZIP codes. 
 
+Lets look at our collection using the Python interpreter.
 
-
-
+```python
+$ python
+Python 3.6.5 (v3.6.5:f59c0932b4, Mar 28 2018, 03:03:55)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pymongo
+>>> client=pymongo.MongoClient()
+>>> db=client['demo']
+>>> db.list_collection_names()
+['zipcodes']
+>>> zipcodes=db["zipcodes"]
+>>> zipcodes.find_one()
+{'_id': '01001', 'city': 'AGAWAM', 'loc': [-72.622739, 42.070206], 'pop': 15338, 'state': 'MA'}
 ```
+
+Now, 
 

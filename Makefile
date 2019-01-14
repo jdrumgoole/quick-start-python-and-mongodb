@@ -35,4 +35,4 @@ get_zip_data:
 	mongodump --host demodata-shard-0/demodata-shard-00-00-rgl39.mongodb.net:27017,demodata-shard-00-01-rgl39.mongodb.net:27017,demodata-shard-00-02-rgl39.mongodb.net:27017 --ssl --username readonly --password readonly --authenticationDatabase admin --db demo --collection zipcodes
 
 install_zip_data:
-	mongorestore --drop --host ${REPLICASET_NAME}/localhost:27017
+	mongorestore --drop
