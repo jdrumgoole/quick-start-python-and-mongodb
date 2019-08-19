@@ -61,5 +61,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 {'_id': '01001', 'city': 'AGAWAM', 'loc': [-72.622739, 42.070206], 'pop': 15338, 'state': 'MA'}
 ```
 
-Now, 
-
+Now, lets delete a single document from the collection
+```python
+>>> zipcodes.delete_one({"_id": '01001'})
+```
