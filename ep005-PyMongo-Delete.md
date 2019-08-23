@@ -64,4 +64,37 @@ Type "help", "copyright", "credits" or "license" for more information.
 Now, lets delete a single document from the collection
 ```python
 >>> zipcodes.delete_one({"_id": '01001'})
+<pymongo.results.DeleteResult object at 0x000001FCD6AF4A88>
+>>> zipcodes.find_one({'_id': '01001'})
+>>> 
+>>> zipcodes.count_documents({'_id': '01001'})
+0
+>>>
+```
+
+`find_one` returns `None` if there are no matching documents. We can confirm this by counting
+the documents that match the query. We can see that there are 0 matching documents.
+
+To zap a bunch of documents we can use the `delete` function without the `_one` suffix. So to delete
+all the ZIP codes associated with CUSHMAN. We can do:
+
+```python
+>>> x=list(zipcodes.find({"city": "CUSHMAN"}))
+>>> x
+[{'_id': '01002', 'city': 'CUSHMAN', 'loc': [-72.51565, 42.377017], 'pop': 36963, 'state': 'MA'}, {'_id': '72526', 'city': 'CUSHMAN', 'loc': [-91.776455, 35.869663], 'pop': 336, 'state': 'AR'}]
+>>> import pprint
+>>> pprint.pprint(x)
+[{'_id': '01002',
+  'city': 'CUSHMAN',
+  'loc': [-72.51565, 42.377017],
+  'pop': 36963,
+  'state': 'MA'},
+ {'_id': '72526',
+  'city': 'CUSHMAN',
+  'loc': [-91.776455, 35.869663],
+  'pop': 336,
+  'state': 'AR'}]
+>>>
+>>> 
+
 ```
