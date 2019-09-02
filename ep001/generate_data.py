@@ -20,11 +20,11 @@ def make_user(g):
                  "Board gaming", "Darts", "Swimmming", "Triathlon", "Running",
                  "Reading", "politics"]
 
-
     gender = random.choice(list(Gender))
+    gender_string = str(gender).split(".")[1]
     user["first_name"] = person.name(gender)
-    user["gender"] = str(gender).split(".")[1]
-    user["last_name"] = person.surname(user["gender"])
+    user["last_name"] = person.surname(gender)
+    user["gender"] = gender_string
     user["company"] = business.company()
     email_domain = "".join(user['company'].lower().split(" "))
     user["email"] = f"{user['first_name']}.{user['last_name']}@{email_domain}{internet.top_level_domain()}"
