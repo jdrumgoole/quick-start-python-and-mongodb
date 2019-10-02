@@ -9,6 +9,7 @@ mimesis = "*"
 dateutils = "*"
 ipython = "*"
 mongodbshell = "*"
+dnspython = "*"
 
 [dev-packages]
 

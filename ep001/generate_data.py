@@ -1,4 +1,4 @@
-from mimesis import Generic
+from mimesis import Generic, randints
 from mimesis.enums import Gender
 import pymongo
 import argparse
@@ -7,38 +7,70 @@ import pprint
 from datetime import timedelta,datetime
 import sys
 
-def make_user(g):
 
-    person = g.person
-    address = g.address
-    business = g.business
-    internet = g.internet
-    datetime = g.datetime
+class User:
 
-    user = {}
-    interests = ["Soccer", "Golf", "Football", "Stamp Collecting", "skydiving",
-                 "Board gaming", "Darts", "Swimmming", "Triathlon", "Running",
-                 "Reading", "politics"]
+    def __init__(self, locale:str="en", seed:int = None):
 
-    gender = random.choice(list(Gender))
-    gender_string = str(gender).split(".")[1]
-    user["first_name"] = person.name(gender)
-    user["last_name"] = person.surname(gender)
-    user["gender"] = gender_string
-    user["company"] = business.company()
-    email_domain = "".join(user['company'].lower().split(" "))
-    user["email"] = f"{user['first_name']}.{user['last_name']}@{email_domain}{internet.top_level_domain()}"
-    user["country"]= address.country()
-    user["city"] = address.city()
-    user["phone"] = person.telephone()
-    user["location"] = { "type": "Point", "coordinates" : [address.longitude(), address.latitude()]}
-    user["language"] = person.language()
-    sample_size = random.randint(0,5)
-    user["interests"] = random.sample(interests, sample_size)
-    year = random.randint(2000, 2018)
-    user["registered"] = datetime.datetime(start=year)
-    user["last_login"] = user["registered"] + timedelta(minutes=random.randint(5, 600000))
-    return user
+        self._locale = locale
+        self._seed = seed
+        if self._seed:
+            self._generic = Generic(self._locale, self._seed)
+        else:
+            self._generic = Generic(self._locale)
+
+        self._user_id = 1000
+
+    def make_user(self):
+
+        person = self._generoc.person
+        address = self._generic.address
+        business = self._generic.business
+        internet = self._generic.internet
+        datetime = self._generic.datetime
+
+        user = {}
+        interests = ["Soccer", "Golf", "Football", "Stamp Collecting", "skydiving",
+                     "Board gaming", "Darts", "Swimmming", "Triathlon", "Running",
+                     "Reading", "politics"]
+
+        gender = random.choice(list(Gender))
+        gender_string = str(gender).split(".")[1]
+        user["first_name"] = person.name(gender)
+        user["last_name"] = person.surname(gender)
+        user["gender"] = gender_string
+        user["company"] = business.company()
+        email_domain = "".join(user['company'].lower().split(" "))
+        user["email"] = f"{user['first_name']}.{user['last_name']}@{email_domain}{internet.top_level_domain()}"
+        year = random.randint(2000, 2018)
+        user["registered"] = datetime.datetime(start=year)
+        user["user_id"] = self._user_id
+        self._user_id = self._user_id + 1
+        user["country"]= address.country()
+        user["city"] = address.city()
+        user["phone"] = person.telephone()
+        user["location"] = { "type": "Point", "coordinates" : [address.longitude(), address.latitude()]}
+        user["language"] = person.language()
+        sample_size = random.randint(0,5)
+        user["interests"] = random.sample(interests, sample_size)
+        user["last_login"] = user["registered"] + timedelta(minutes=random.randint(5, 600000))
+        return user
+
+    def make_sessions(self, user):
+
+
+        start_session = { "user" : user["user_id"],
+                          "login" : user["registered"]}
+        end_session = {"user": user["user_id"],
+                       "logout" : start_session["login"] + timedelta(minutes=random.randint(0, 180),
+                                                                     seconds=random.randint(1, 59),
+                                                                     milliseconds=random.randint( ))}
+        sessions = random.randint(1, 300)
+
+        for i in range(1, sessions):
+            start_session = { "user" : user["user_id"],
+                              "login" : }
+
 
 if __name__ == "__main__":
 
@@ -65,10 +97,7 @@ if __name__ == "__main__":
         print(f"Dropping collection: {collection.name}")
         db.drop_collection(args.collection)
     
-    if args.seed:
-        generic = Generic(args.locale, args.seed)
-    else:
-        generic = Generic(args.locale)
+
 
     print("")
     try:

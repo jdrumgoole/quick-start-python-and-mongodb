@@ -1,69 +1,17 @@
 # Setting Up Your PyMongo Environment
-Welcome to PyMongo Monday. This is the first in a series of regular blog posts that will introduce developers to 
-programming MongoDB using the Python programming language. It’s called PyMongo Monday because 
-[PyMongo](https://api.mongodb.com/python/current/) is 
-the name of the client library (in MongoDB speak we refer to it as a "driver") we use to interact 
-with the MongoDB Server. Monday because we aim to release each new episode on Monday.
+Welcome to Quick Start:Python. This is the first in a series of regular blog 
+posts that will introduce developers to programming MongoDB using the 
+Python programming language. 
 
-To get started we need to install the toolchain used by a typical MongoDB Python developer.
+First thing we need to do is head over to the 
+[the registration page](https://www.mongodb.com/cloud/atlas/register) for
+MongoDB Atlas. There you can setup your free-tier and get started with 
+MongoDB with the need for payment or credit card validation. Once you have
+registered and set up your free-tier you are ready to get started with the rest
+of this tutorial. 
 
-## Installing m
-First up is [**m**](https://github.com/aheckmann/m). Hard to find online unless your search for "MongoDB m", **m** is 
-a tool to manage and use multiple installations of the MongoDB Server in parallel. It is an invaluable tool 
-if you want to try out the latest and greatest beta version but still continue mainline development 
-on our current stable release.
 
-The easiest way to install **m** is with [npm](https://nodejs.org/en/) the Node.js package manager 
-(which it turns out is not just for Node.js). 
-<pre>
-$ <b>npm install -g m</b>
-Password:******
-/usr/local/bin/m -> /usr/local/lib/node_modules/m/bin/m
-+ m@1.4.1
-updated 1 package in 2.361s
-$
-</pre>
-If you can’t or don’t want to use npm you can download and install directly from the github 
-[repo](https://github.com/aheckmann/m). See the [README](https://github.com/aheckmann/m/blob/master/README.md) 
-there for details.
 
-For today we will use **m** to install the current stable production version 
-([4.0.2](https://docs.mongodb.com/manual/release-notes/4.0/) at the time of writing).  
-We run the **stable** command to achieve this.
-
-<pre>
-$ <b>m stable</b>
-MongoDB version 4.0.2 is not installed.
-Installation may take a while. Would you like to proceed? [y/n] <b>y</b>
-... installing binary
-
-######################################################################## 100.0%
-/Users/jdrumgoole
-... removing source
-... installation complete
-$
-</pre>
-
-If you need to use the path directly in another program you can get that with **m bin.**
-
-<pre>
-$ <b>m bin 4.0.0</b>
-/usr/local/m/versions/4.0.1/bin
-$
-</pre>
-
-To run the corresponding binary do **m use stable**
-
-<pre>
-$ <b>m use stable</b>
-2018-08-28T11:41:48.157+0100 I CONTROL  [main] Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'
-2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] MongoDB starting : pid=38524 port=27017 dbpath=/data/db 64-bit host=JD10Gen.local
-2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] db version v4.0.2
-2018-08-28T11:41:48.171+0100 I CONTROL  [initandlisten] git version: fc1573ba18aee42f97a3bb13b67af7d837826b47
-<b><i>&lt other server output &gt</i></b>
-<b>...</b>
-2018-06-13T15:52:43.648+0100 I NETWORK  [initandlisten] waiting for connections on port 27017
-</pre>
 
 Now that we have a server running we can confirm that it works by connecting via the 
 [mongo shell](https://docs.mongodb.com/manual/mongo/).
